@@ -7,6 +7,14 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
+    "aws-amplify": "^1.1.9",
+    "aws-amplify-vue": "^0.2.1-beta.0",
+    "axios": "^0.18.0",
+    "buefy": "^0.7.0",
+    "bulma": "^0.7.2",
+    "font-awesome": "^4.7.0",
+    "i": "^0.3.6",
+    "npm": "^6.4.1",
     "vue": "^2.5.17",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1"

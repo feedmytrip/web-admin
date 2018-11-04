@@ -1,0 +1,14 @@
+{
+    "providers": {
+        "awscloudformation": {
+            "AuthRoleName": "fmtwebadmin-20181103094232-authRole",
+            "UnauthRoleArn": "arn:aws:iam::563319661021:role/fmtwebadmin-20181103094232-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::563319661021:role/fmtwebadmin-20181103094232-authRole",
+            "Region": "us-east-1",
+            "DeploymentBucketName": "fmtwebadmin-20181103094232-deployment",
+            "UnauthRoleName": "fmtwebadmin-20181103094232-unauthRole",
+            "StackName": "fmtwebadmin-20181103094232",
+            "StackId": "arn:aws:cloudformation:us-east-1:563319661021:stack/fmtwebadmin-20181103094232/ef8df8f0-df65-11e8-8e8d-500abe22848d"
+        }
+    }
+}
