@@ -1,14 +1,53 @@
 {
-    "providers": {
-        "awscloudformation": {
-            "AuthRoleName": "fmtwebadmin-20181103094232-authRole",
-            "UnauthRoleArn": "arn:aws:iam::563319661021:role/fmtwebadmin-20181103094232-unauthRole",
-            "AuthRoleArn": "arn:aws:iam::563319661021:role/fmtwebadmin-20181103094232-authRole",
-            "Region": "us-east-1",
-            "DeploymentBucketName": "fmtwebadmin-20181103094232-deployment",
-            "UnauthRoleName": "fmtwebadmin-20181103094232-unauthRole",
-            "StackName": "fmtwebadmin-20181103094232",
-            "StackId": "arn:aws:cloudformation:us-east-1:563319661021:stack/fmtwebadmin-20181103094232/ef8df8f0-df65-11e8-8e8d-500abe22848d"
-        }
-    }
+	"providers": {
+		"awscloudformation": {
+			"AuthRoleName": "fmtwebadmin-20181103094232-authRole",
+			"UnauthRoleArn": "arn:aws:iam::563319661021:role/fmtwebadmin-20181103094232-unauthRole",
+			"AuthRoleArn": "arn:aws:iam::563319661021:role/fmtwebadmin-20181103094232-authRole",
+			"Region": "us-east-1",
+			"DeploymentBucketName": "fmtwebadmin-20181103094232-deployment",
+			"UnauthRoleName": "fmtwebadmin-20181103094232-unauthRole",
+			"StackName": "fmtwebadmin-20181103094232",
+			"StackId": "arn:aws:cloudformation:us-east-1:563319661021:stack/fmtwebadmin-20181103094232/ef8df8f0-df65-11e8-8e8d-500abe22848d"
+		}
+	},
+	"auth": {
+		"cognito4179a4b2": {
+			"service": "Cognito",
+			"providerPlugin": "awscloudformation",
+			"providerMetadata": {
+				"s3TemplateURL": "https://s3.amazonaws.com/fmtwebadmin-20181103094232-deployment/amplify-cfn-templates/auth/cognito4179a4b2-cloudformation-template.yml",
+				"logicalId": "authcognito4179a4b2"
+			},
+			"lastPushTimeStamp": "2018-11-04T03:31:10.908Z",
+			"output": {
+				"AppClientSecret": "kopacj5douk7gjvh99ev06o0pv7uomev57tqqqr6ulohvv79h68",
+				"UserPoolId": "us-east-1_kYZgInN9U",
+				"AppClientIDWeb": "26kf6irq8s20p15ulaf38jp032",
+				"AppClientID": "25me63d3prteio58gqrl97mptd",
+				"IdentityPoolId": "us-east-1:d887aa7e-9622-4820-8a59-48fca13362f8",
+				"IdentityPoolName": "cognito4179a4b2_identitypool_4179a4b2",
+				"UserPoolName": "cognito4179a4b2_userpool_4179a4b2"
+			},
+			"lastPushDirHash": "+FNAdT+hQl2BltFv++7CL7E8UEY="
+		}
+	},
+	"hosting": {
+		"S3AndCloudFront": {
+			"service": "S3AndCloudFront",
+			"providerPlugin": "awscloudformation",
+			"providerMetadata": {
+				"s3TemplateURL": "https://s3.amazonaws.com/fmtwebadmin-20181103094232-deployment/amplify-cfn-templates/hosting/template.json",
+				"logicalId": "hostingS3AndCloudFront"
+			},
+			"lastPushTimeStamp": "2018-11-04T03:31:10.910Z",
+			"output": {
+				"S3BucketSecureURL": "https://admin.feedmytrip.com.s3.amazonaws.com",
+				"WebsiteURL": "http://admin.feedmytrip.com.s3-website-us-east-1.amazonaws.com",
+				"Region": "us-east-1",
+				"HostingBucketName": "admin.feedmytrip.com"
+			},
+			"lastPushDirHash": "V4p4MU8gZP1PMlhiKFF3phY7O5M="
+		}
+	}
 }

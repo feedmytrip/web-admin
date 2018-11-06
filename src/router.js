@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
+import { Auth } from 'aws-amplify'
+
 import Store from './store'
 
 import Login from './views/Login'
@@ -56,12 +58,14 @@ const router = new Router({
   ]
 })
 
-router.beforeResolve((to, from, next) => {
+router.beforeResolve(async (to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    console.log(Store.state.signedIn)
-    if (Store.state.signedIn) {
-      next()
-    } else {
+    await Auth.currentAuthenticatedUser()
+      .then(user => {
+        Store.commit('auth/setUser', user)
+        next()
+      })
+    if (!Store.getters['auth/userSignedIn']) {
       next({path:'/login'});
     }
   } else {

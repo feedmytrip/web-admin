@@ -1,7 +1,7 @@
 <template>
 <section id="app" class="hero is-link is-bold is-fullheight">
   <!-- Hero head: will stick at the top -->
-  <div class="hero-head">
+  <div class="hero-head" v-if="signedIn">
     <header class="navbar is-white" style="background-color: white;">
       <div class="container is-fluid">
         <div class="navbar-brand">
@@ -14,7 +14,7 @@
             <span></span>
           </span>
         </div>
-        <div id="navbarMenuHeroC" class="navbar-menu" v-if="signedIn">
+        <div id="navbarMenuHeroC" class="navbar-menu">
           <div class="navbar-end">
             <router-link to="/highlights" class="navbar-item">
               Highlights
@@ -29,12 +29,13 @@
               Auxiliary
             </router-link>
             <span class="navbar-item">
-              <a class="button is-success is-inverted" @click="signOut">
-                <span class="icon">
-                  <i class="fa fa-sign-out"></i>
-                </span>
-                <span>SignOut</span>
-              </a>
+              <b-tooltip label="Sign Out" 
+                type="is-light"
+                position="is-bottom">
+                  <button class="button is-success is-inverted">
+                      <i class="fa fa-sign-out"></i>
+                  </button>
+              </b-tooltip>
             </span>
           </div>
         </div>
@@ -44,7 +45,7 @@
 
   <!-- Hero content: will be in the middle -->
   <div class="hero-body">
-    <div class="container has-text-centered">
+    <div class="container is-fluid has-text-centered" style="margin-left: 10px; margin-right: 10px;">
       <router-view></router-view>
     </div>
   </div>
@@ -61,13 +62,14 @@ import { AmplifyEventBus } from 'aws-amplify-vue';
 export default {
   computed: {
     signedIn() {
-      return this.$store.state.signedIn
+      return this.$store.getters['auth/userSignedIn']
     }
   },
   methods:{
     signOut() {
       this.$Amplify.Auth.signOut()
         .then(() => {
+          this.$store.commit('auth/logout')
           this.$router.push('/login')
           return AmplifyEventBus.$emit('authState', 'signedOut')
         })

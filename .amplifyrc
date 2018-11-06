@@ -10,5 +10,6 @@
             "StackName": "fmtwebadmin-20181103094232",
             "StackId": "arn:aws:cloudformation:us-east-1:563319661021:stack/fmtwebadmin-20181103094232/ef8df8f0-df65-11e8-8e8d-500abe22848d"
         }
-    }
+    },
+    "publish-ignore": []
 }

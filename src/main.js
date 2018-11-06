@@ -3,6 +3,7 @@ import App from './App.vue'
 import store from './store'
 import router from './router'
 import Buefy from 'buefy'
+import moment from 'moment'
 
 import 'bulma/css/bulma.css'
 import 'buefy/dist/buefy.css'
@@ -46,6 +47,8 @@ Amplify.configure({
 Vue.use(AmplifyPlugin, AmplifyModules)
 
 Vue.config.productionTip = false
+
+Vue.prototype.$moment = moment
 
 new Vue({
   store,
