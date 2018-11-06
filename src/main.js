@@ -4,6 +4,7 @@ import store from './store'
 import router from './router'
 import Buefy from 'buefy'
 import moment from 'moment'
+import lodash from 'lodash'
 
 import Table from './components/common/Table'
 
@@ -51,6 +52,7 @@ Vue.use(AmplifyPlugin, AmplifyModules)
 Vue.config.productionTip = false
 
 Vue.prototype.$moment = moment
+Vue.prototype.$_ = lodash
 
 Vue.component('fmt-table', Table)
 
