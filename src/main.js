@@ -5,6 +5,8 @@ import router from './router'
 import Buefy from 'buefy'
 import moment from 'moment'
 
+import Table from './components/common/Table'
+
 import 'bulma/css/bulma.css'
 import 'buefy/dist/buefy.css'
 import 'font-awesome/css/font-awesome.min.css'
@@ -49,6 +51,8 @@ Vue.use(AmplifyPlugin, AmplifyModules)
 Vue.config.productionTip = false
 
 Vue.prototype.$moment = moment
+
+Vue.component('fmt-table', Table)
 
 new Vue({
   store,

@@ -44,7 +44,7 @@
   </div>
 
   <!-- Hero content: will be in the middle -->
-  <div class="hero-body">
+  <div class="hero-body" style="align-items:flex-start;">
     <div class="container is-fluid has-text-centered" style="margin-left: 10px; margin-right: 10px;">
       <router-view></router-view>
     </div>

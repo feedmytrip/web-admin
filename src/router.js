@@ -10,7 +10,7 @@ import Dashboard from './views/Dashboard'
 import Highlights from './views/Highlights'
 import Trips from './views/Trips'
 import Events from './views/Events'
-import Auxiliary from './views/Highlights'
+import Auxiliary from './views/Auxiliary'
 
 Vue.use(Router)
 
