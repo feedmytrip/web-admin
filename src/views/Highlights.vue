@@ -1,6 +1,5 @@
 <template>
   <div class="has-text-left">
-    <p class="is-size-4" style="margin-bottom: 15px;">Highlights</p>
     <div class="columns is-size-7">
       <div class="column is-5">
         <div class="box">
@@ -28,6 +27,8 @@
     },
     mounted() {
       this.$store.dispatch('highlights/getAll')
+      this.$store.commit('setTitle', 'Highlights')
+      this.$store.commit('setSubtitle', 'Manages system highlights')
     },
     computed: {
       data() {

@@ -36,7 +36,7 @@ const actions = {
 
 const mutations = {
   initCategories (state, categories) {
-    state.categories = state.categories.concat(categories)
+    state.categories = [].concat(categories)
   },
   addCategory (state, category) {
     state.categories.push(category)

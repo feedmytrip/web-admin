@@ -28,7 +28,7 @@ const actions = {
 
 const mutations = {
   init (state, highlights) {
-    state.all = state.all.concat(highlights)
+    state.all = [].concat(highlights)
   },
   add (state, highlight) {
     state.all.push(highlight)

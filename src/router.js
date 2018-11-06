@@ -21,38 +21,37 @@ const router = new Router({
   routes: [
     {
       path: '/',
-      name: 'dashboard',
+      name: 'Dashboard',
       component: Dashboard,
       meta: { requiresAuth: true}
     },
     {
       path: '/highlights',
-      name: 'highlights',
+      name: 'Highlights',
       component: Highlights,
       meta: { requiresAuth: true}
     },
     {
       path: '/trips',
-      name: 'trips',
+      name: 'Trips',
       component: Trips,
       meta: { requiresAuth: true}
     },
     {
       path: '/events',
-      name: 'events',
+      name: 'Events',
       component: Events,
       meta: { requiresAuth: true}
     },
     {
       path: '/auxiliary',
-      name: 'auxiliary',
+      name: 'Auxiliary Data',
       component: Auxiliary,
       meta: { requiresAuth: true}
     },
-
     {
       path: '/login',
-      name: 'login',
+      name: 'Login',
       component: Login
     }
   ]
@@ -60,13 +59,18 @@ const router = new Router({
 
 router.beforeResolve(async (to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    await Auth.currentAuthenticatedUser()
-      .then(user => {
-        Store.commit('auth/setUser', user)
-        next()
-      })
-    if (!Store.getters['auth/userSignedIn']) {
-      next({path:'/login'});
+    console.log(Store.getters['auth/userSignedIn'])
+    if (Store.getters['auth/userSignedIn']) {
+      next();
+    } else {
+      await Auth.currentAuthenticatedUser()
+        .then(user => {
+          Store.commit('auth/setUser', user)
+          next()
+        })
+      if (!Store.getters['auth/userSignedIn']) {
+        next({path:'/login'});
+      }
     }
   } else {
   next()

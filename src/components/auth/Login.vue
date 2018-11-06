@@ -48,7 +48,7 @@ export default {
     Auth.currentAuthenticatedUser()
       .then(user => {
         this.$store.commit('auth/setUser', user)
-        this.$router.go(-1)
+        this.$router.push('/')
       })
       .catch(err => console.log(err));
   },
@@ -57,8 +57,8 @@ export default {
       const loading = this.$loading.open()
       this.$store.dispatch('auth/login', this.credentials)
         .then(result => {
-          this.$router.push('/')
           loading.close()
+          this.$router.push('/')
         })
         .catch(err => {
           console.log(err)

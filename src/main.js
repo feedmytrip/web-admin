@@ -7,8 +7,8 @@ import moment from 'moment'
 
 import Table from './components/common/Table'
 
-import 'bulma/css/bulma.css'
 import 'buefy/dist/buefy.css'
+import 'bulma/css/bulma.css'
 import 'font-awesome/css/font-awesome.min.css'
 
 Vue.use(Buefy, {
