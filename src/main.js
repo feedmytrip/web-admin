@@ -6,8 +6,6 @@ import Buefy from 'buefy'
 import moment from 'moment'
 import lodash from 'lodash'
 
-import Table from './components/common/Table'
-
 import 'buefy/dist/buefy.css'
 import 'bulma/css/bulma.css'
 import 'font-awesome/css/font-awesome.min.css'
@@ -53,8 +51,6 @@ Vue.config.productionTip = false
 
 Vue.prototype.$moment = moment
 Vue.prototype.$_ = lodash
-
-Vue.component('fmt-table', Table)
 
 new Vue({
   store,

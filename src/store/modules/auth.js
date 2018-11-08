@@ -17,6 +17,11 @@ const getters = {
   },
   user: (state) => {
     return state.user
+  },
+  userLanguageCode: (state) => {
+    if (state.user) {
+      return state.user.attributes['custom:language_code']
+    }
   }
 }
 
@@ -25,6 +30,7 @@ const actions = {
     return new Promise((resolve, reject) => {  
       Auth.signIn(credentials.username, credentials.password)
       .then(user => {
+        console.log(user)
         commit('setUser', user)
         resolve()  
       })

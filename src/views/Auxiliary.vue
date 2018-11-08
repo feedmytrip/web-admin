@@ -6,15 +6,29 @@
         <fmt-category-form :data="categories"></fmt-category-form>
         <div class="card">
           <div class="card-content">
-            <fmt-table :data="categories"></fmt-table>
+            <fmt-hierarchical-list 
+              :data="categories" 
+              :fields="categoriesFields" 
+              empty-string="" 
+              first-level="mainCategoryId" 
+              id="categoryId"
+              v-on:edit-item="openEditDialog"></fmt-hierarchical-list>
           </div>
         </div>
       </div>
       <div class="column">
         <h2 class="subtitle">Locations</h2>
-        <div class="card has-background-white-ter">
+        <fmt-location-form :data="locations"></fmt-location-form>
+        <div class="card">
           <div class="card-content">
-            <fmt-table :data="categories"></fmt-table>
+            <fmt-hierarchical-list 
+              :data="locations" 
+              :fields="locationsFields"
+              empty-string="none" 
+              second-level="regionId" 
+              first-level="countryId"
+              id="geonameId"
+              v-on:edit-item="openEditDialog"></fmt-hierarchical-list>
           </div>
         </div>
       </div>
@@ -23,19 +37,64 @@
 </template>
 
 <script>
-  import categoryForm from '@/components/auxiliary/CategoryForm' 
+  import CategoryForm from '@/components/auxiliary/CategoryForm'
+  import LocationForm from '@/components/auxiliary/LocationForm'
+  import HierarchicalList from '@/components/common/HierarchicalList'
   export default {
     components: {
-      'fmt-category-form': categoryForm
+      'fmt-category-form': CategoryForm,
+      'fmt-location-form': LocationForm,
+      'fmt-hierarchical-list': HierarchicalList
     },
-    mounted() {
-      this.$store.dispatch('auxiliary/getAllCategories')
+    async created() {
+      const loading = this.$loading.open()
       this.$store.commit('setTitle', 'Auxiliary Data')
       this.$store.commit('setSubtitle', 'Manages system categories and locations')
+      await this.$store.dispatch('auxiliary/getAuxiliaryData')
+      loading.close()
+    },
+    data() {
+      return {
+        categoriesFields: [{
+            'name': 'title',
+            'label': 'Category',
+            'type': 'translation',
+            'style': 'width:80%;'
+          },
+          {
+            'name': 'active',
+            'label': 'Active',
+            'type': 'boolean',
+            'style': 'width:20%; text-align: center !important;'
+          }
+        ],
+        locationsFields: [{
+            'name': 'title',
+            'label': 'Country / Region / City',
+            'type': 'translation',
+            'style': 'width:100%;'
+          }
+        ]
+      }
     },
     computed: {
       categories() {
         return this.$store.getters['auxiliary/categories']
+      },
+      locations() {
+        return this.$store.getters['auxiliary/geonames']
+      }
+    },
+    methods: {
+      openEditDialog(id) {
+        this.$dialog.prompt({
+          message: 'Edit item: '+ id,
+          inputAttrs: {
+            placeholder: 'e.g. Walter',
+            maxlength: 10
+          },
+          onConfirm: (value) => this.$toast.open(`Your name is: ${value}`)
+        })
       }
     }
   }

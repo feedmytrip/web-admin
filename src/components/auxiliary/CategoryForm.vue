@@ -7,7 +7,7 @@
           <div class="select is-fullwidth is-small">
             <select name="country" v-model="category.mainCategoryId">
               <option value=""></option>
-              <option v-for="(object, index) in data" :key="index" :value="object.categoryId">{{ object.title.pt }}</option>
+              <option v-for="(object, index) in mainCategories" :key="index" :value="object.categoryId">{{ object.title.pt }}</option>
             </select>
           </div>
         </div>
@@ -15,7 +15,7 @@
       <div class="field">
         <label class="label is-small">Name</label>
         <p class="control has-icons-right">
-          <input class="input is-small" type="text" placeholder="Name" v-model="category['title'][language_code]">
+          <input class="input is-small" type="text" placeholder="Name" v-model="category['title'][languageCode]">
           <span class="icon is-small is-right">
             <i class="fa fa-check"></i>
           </span>
@@ -23,8 +23,8 @@
       </div>
       <div class="field is-narrow">
         <p class="control" style="padding-top: 24px;">
-          <a class="button is-small is-info" @click="save">
-            Save
+          <a class="button is-small is-info" @click="save" :class="loading ? 'is-loading' : ''">
+            New
           </a>
         </p>
       </div>
@@ -40,7 +40,7 @@ export default {
   data() {
     return {
       name: '',
-      language_code: 'pt',
+      loading: false,
       category: {
         mainCategoryId: '',
         title: {
@@ -53,12 +53,19 @@ export default {
   },
   computed: {
     mainCategories() {
-      return this.$_.find(this.data, {'mainCategoryId': ''})
+      return this.$_.filter(this.data, {'mainCategoryId':''})
+    },
+    languageCode() {
+      return this.$store.getters['auth/userLanguageCode']
     }
   },
   methods: {
     save() {
+      this.loading = true
       this.$store.dispatch('auxiliary/newCategory', this.category)
+      .then(result => {
+        this.loading = false
+      })
     }
   }
 

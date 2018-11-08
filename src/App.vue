@@ -55,11 +55,21 @@
           </div>
         </div>
       </section>
-      <div class="has-background-white-ter">
+      <div class="has-background-white-ter fmt-content">
         <div class="container is-fluid">
           <router-view></router-view>
         </div>
       </div>
+      <footer class="fmt-footer has-text-white">
+        <div class="columns">
+          <div class="column">
+            <p>FeedMyTrip Admin - v1.0</p>
+          </div>         
+          <div class="column has-text-right">
+            <p>Language: {{ languageCode }}</p>
+          </div>
+        </div>
+      </footer>
     </div>
   </section>
 </template>
@@ -78,6 +88,9 @@
       },
       subtitle() {
         return this.$store.getters['subtitle']
+      },
+      languageCode() {
+        return this.$store.getters['auth/userLanguageCode']
       }
     },
     methods: {
@@ -97,5 +110,40 @@
 <style>
 .fmt-hero-background {
   background-image: linear-gradient(141deg, #3725d4 0%, #7957d5 71%, #9b67df 100%) !important;
+}
+.fmt-content {
+  margin-bottom: 30px;
+}
+.fmt-footer {
+  bottom: 0px;
+  left: 0;
+  position: fixed;
+  width: 100%;
+  padding: 4px;
+  background-color: #384759;
+  font-size: 0.60rem;
+  font-weight: 600;
+}
+.pace {
+  -webkit-pointer-events: none;
+  pointer-events: none;
+
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+.pace-inactive {
+  display: none;
+}
+
+.pace .pace-progress {
+  background: #dd88ba;
+  position: fixed;
+  z-index: 2000;
+  top: 0;
+  right: 100%;
+  width: 100%;
+  height: 2px;
 }
 </style>
