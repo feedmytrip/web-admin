@@ -41,7 +41,7 @@ const actions = {
   },
   newGeoname ({ commit, rootGetters }, geoname ) {
     return new Promise((resolve, reject) => {  
-      axios.post('/geonames', geoname, { headers: { Authorization: rootGetters['auth/token'] } })
+      axios.post('/geonames', JSON.stringify(geoname), { headers: { Authorization: rootGetters['auth/token'] } })
       .then(response => {
         commit('addGeoname', response.data)
         resolve()
@@ -53,12 +53,62 @@ const actions = {
   },
   newCategory ({ commit, rootGetters }, category ) {
     return new Promise((resolve, reject) => {  
-      axios.post('/categories', category, { headers: { Authorization: rootGetters['auth/token'] } })
+      axios.post('/categories', JSON.stringify(category), { headers: { Authorization: rootGetters['auth/token'] } })
       .then(response => {
         commit('addCategory', response.data)
         resolve()
       })
       .catch(err => {
+        reject(err)
+      })
+    })
+  },
+  updateGeoname ({ commit, rootGetters }, geoname ) {
+    return new Promise((resolve, reject) => {  
+      axios.patch('/geonames/'+geoname.geonameId, JSON.stringify(geoname), { headers: { Authorization: rootGetters['auth/token'] } })
+      .then(response => {
+        commit('updateGeoname', response.data)
+        resolve()
+      })
+      .catch(err => {
+        reject(err)
+      })
+    })
+  },
+  updateCategory ({ commit, rootGetters }, category ) {
+    return new Promise((resolve, reject) => {  
+      axios.patch('/categories/'+category.categoryId, JSON.stringify(category), { headers: { Authorization: rootGetters['auth/token'] } })
+      .then(response => {
+        commit('updateCategory', response.data)
+        resolve()
+      })
+      .catch(err => {
+        reject(err)
+      })
+    })
+  },
+  async deleteGeoname ({ commit, rootGetters }, geonameId ) {
+    return new Promise((resolve, reject) => {  
+      axios.delete('/geonames/'+geonameId, { headers: { 'Authorization': rootGetters['auth/token'] } })
+      .then(response => {
+        commit('deleteGeoname', geonameId)
+        resolve()
+      })
+      .catch(err => {
+        console.log("teste: "+ err.response)
+        reject(err)
+      })
+    })
+  },
+  deleteCategory ({ commit, rootGetters }, categoryId ) {
+    return new Promise((resolve, reject) => {  
+      axios.delete('/categories/'+categoryId, { headers: { 'Authorization': rootGetters['auth/token'] } })
+      .then(response => {
+        commit('deleteCategory', categoryId)
+        resolve()
+      })
+      .catch(err => {
+        console.log("teste: "+ err.response)
         reject(err)
       })
     })
@@ -72,13 +122,38 @@ const mutations = {
   addGeoname (state, geoname) {
     state.geonames.push(geoname)
   },
+  updateGeoname (state, geoname) {
+    const oldIndex = _.findIndex(state.geonames, {'geonameId': geoname.geonameId})
+      if (oldIndex !== -1) {
+        state.geonames.splice(oldIndex, 1)
+      }
+      state.geonames.push(geoname)
+  },
+  deleteGeoname (state, geonameId) {
+    const index = _.findIndex(state.geonames, {'geonameId': geonameId})
+    if (index !== -1) {
+      state.geonames.splice(index, 1)
+    }
+  },
   initCategories (state, categories) {
     state.categories = [].concat(categories)
   },
   addCategory (state, category) {
     state.categories.push(category)
+  },
+  updateCategory (state, category) {
+    const oldIndex = _.findIndex(state.categories, {'categoryId': category.categoryId})
+    if (oldIndex !== -1) {
+      state.categories.splice(oldIndex, 1)
+    }
+    state.categories.push(category)
+  },
+  deleteCategory (state, categoryId) {
+    const index = _.findIndex(state.categories, {'categoryId': categoryId})
+    if (index !== -1) {
+      state.categories.splice(index, 1)
+    }
   }
-
 }
 
 export default {

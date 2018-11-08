@@ -10,6 +10,7 @@ import Dashboard from './views/Dashboard'
 import Highlights from './views/Highlights'
 import Trips from './views/Trips'
 import Events from './views/Events'
+import Users from './views/Users'
 import Auxiliary from './views/Auxiliary'
 
 Vue.use(Router)
@@ -44,6 +45,12 @@ const router = new Router({
       meta: { requiresAuth: true}
     },
     {
+      path: '/users',
+      name: 'Users',
+      component: Users,
+      meta: { requiresAuth: true}
+    },
+    {
       path: '/auxiliary',
       name: 'Auxiliary Data',
       component: Auxiliary,
@@ -64,16 +71,16 @@ router.beforeResolve(async (to, from, next) => {
       next();
     } else {
       await Auth.currentAuthenticatedUser()
-        .then(user => {
-          Store.commit('auth/setUser', user)
-          next()
-        })
-      if (!Store.getters['auth/userSignedIn']) {
+      .then(user => {
+        Store.commit('auth/setUser', user)
+        next()
+      })
+      .catch(err => {
         next({path:'/login'});
-      }
+      })
     }
   } else {
-  next()
+    next()
   }
 })
 

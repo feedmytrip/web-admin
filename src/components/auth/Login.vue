@@ -2,7 +2,7 @@
   <div class="columns is-centered">
     <div class="column is-one-third">
       <div class="box">
-        <div style="margin-bottom: 20px">
+        <div class="has-text-centered" style="margin-bottom: 20px">
           <img src="@/assets/logo_200x200.png" style="border-radius: 4px;"/>
         </div>
         <div class="field">

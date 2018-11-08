@@ -30,7 +30,6 @@ const actions = {
     return new Promise((resolve, reject) => {  
       Auth.signIn(credentials.username, credentials.password)
       .then(user => {
-        console.log(user)
         commit('setUser', user)
         resolve()  
       })

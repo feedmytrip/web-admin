@@ -33,6 +33,9 @@
               <router-link to="/events" class="navbar-item">
                 Events
               </router-link>
+              <router-link to="/users" class="navbar-item">
+                Users
+              </router-link>
               <router-link to="/auxiliary" class="navbar-item">
                 Auxiliary
               </router-link>
@@ -61,7 +64,7 @@
         </div>
       </div>
       <footer class="fmt-footer has-text-white">
-        <div class="columns">
+        <div class="columns is-mobile">
           <div class="column">
             <p>FeedMyTrip Admin - v1.0</p>
           </div>         
@@ -113,6 +116,7 @@
 }
 .fmt-content {
   margin-bottom: 30px;
+  padding: 10px;
 }
 .fmt-footer {
   bottom: 0px;

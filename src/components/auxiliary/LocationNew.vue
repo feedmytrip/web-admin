@@ -30,7 +30,7 @@
       <div class="field">
         <label class="label is-small">Name</label>
         <p class="control has-icons-right">
-          <input class="input is-small" type="text" placeholder="Name" v-model="geoname['title'][languageCode]">
+          <input class="input is-small" type="text" placeholder="Name" v-model="geoname['title'][languageCode]" @keyup.enter="save">
           <span class="icon is-small is-right">
             <i class="fa fa-check"></i>
           </span>
@@ -69,16 +69,16 @@
     },
     computed: {
       countries() {
-        return this.$_.filter(this.data, {
+        return this.$_.orderBy(this.$_.filter(this.data, {
           'countryId': 'none',
           'regionId': 'none'
-        })
+        }), 'title'+this.languageCode, 'asc')
       },
       regions() {
-        return this.$_.filter(this.data, {
+        return this.$_.orderBy(this.$_.filter(this.data, {
           'countryId': this.geoname.countryId,
           'regionId': 'none'
-        })
+        }), 'title'+this.languageCode, 'asc')
       },
       languageCode() {
         return this.$store.getters['auth/userLanguageCode']

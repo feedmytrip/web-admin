@@ -7,6 +7,9 @@
     </div>
     <div v-if="type === 'text'">
     </div>
+    <div class="field" v-if="type === 'active'">
+      <b-switch :value="value" size="is-small" type="is-info" v-on:input.native="$emit('toggle-active', $event.target.value)"></b-switch>
+    </div>
     <div v-if="type === 'boolean'">
       <span class="icon is-size-6 has-text-info" v-bind:class="[value ? 'has-text-info' : 'has-text-white-ter']">
         <i class="fa fa-check-circle"></i>

@@ -7,7 +7,7 @@
           <div class="select is-fullwidth is-small">
             <select name="country" v-model="category.mainCategoryId">
               <option value=""></option>
-              <option v-for="(object, index) in mainCategories" :key="index" :value="object.categoryId">{{ object.title.pt }}</option>
+              <option v-for="(object, index) in mainCategories" :key="index" :value="object.categoryId">{{ object['title'][languageCode] }}</option>
             </select>
           </div>
         </div>
@@ -15,7 +15,7 @@
       <div class="field">
         <label class="label is-small">Name</label>
         <p class="control has-icons-right">
-          <input class="input is-small" type="text" placeholder="Name" v-model="category['title'][languageCode]">
+          <input class="input is-small" type="text" placeholder="Name" v-model="category['title'][languageCode]" @keyup.enter="save">
           <span class="icon is-small is-right">
             <i class="fa fa-check"></i>
           </span>
@@ -53,7 +53,7 @@ export default {
   },
   computed: {
     mainCategories() {
-      return this.$_.filter(this.data, {'mainCategoryId':''})
+      return this.$_.orderBy(this.$_.filter(this.data, {'mainCategoryId':''}), 'title'+this.languageCode, 'asc')
     },
     languageCode() {
       return this.$store.getters['auth/userLanguageCode']
@@ -65,6 +65,7 @@ export default {
       this.$store.dispatch('auxiliary/newCategory', this.category)
       .then(result => {
         this.loading = false
+        this.category['title'][this.languageCode] = ''
       })
     }
   }

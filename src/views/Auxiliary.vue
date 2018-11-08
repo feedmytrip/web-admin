@@ -6,13 +6,11 @@
         <fmt-category-form :data="categories"></fmt-category-form>
         <div class="card">
           <div class="card-content">
-            <fmt-hierarchical-list 
-              :data="categories" 
-              :fields="categoriesFields" 
-              empty-string="" 
-              first-level="mainCategoryId" 
-              id="categoryId"
-              v-on:edit-item="openEditDialog"></fmt-hierarchical-list>
+            <fmt-hierarchical-list :data="categories" :fields="categoriesFields" empty-string="" first-level="mainCategoryId"
+              id="categoryId" :delete-button="true" 
+              v-on:toggle-active-item="toggleCategory" 
+              v-on:delete-item="deleteCategory" 
+              v-on:edit-item="editCategoryModal"></fmt-hierarchical-list>
           </div>
         </div>
       </div>
@@ -21,14 +19,10 @@
         <fmt-location-form :data="locations"></fmt-location-form>
         <div class="card">
           <div class="card-content">
-            <fmt-hierarchical-list 
-              :data="locations" 
-              :fields="locationsFields"
-              empty-string="none" 
-              second-level="regionId" 
-              first-level="countryId"
-              id="geonameId"
-              v-on:edit-item="openEditDialog"></fmt-hierarchical-list>
+            <fmt-hierarchical-list :data="locations" :fields="locationsFields" empty-string="none" second-level="regionId"
+              first-level="countryId" id="geonameId" :delete-button="true" 
+              v-on:delete-item="deleteLocation" 
+              v-on:edit-item="editLocationModal"></fmt-hierarchical-list>
           </div>
         </div>
       </div>
@@ -37,13 +31,17 @@
 </template>
 
 <script>
-  import CategoryForm from '@/components/auxiliary/CategoryForm'
-  import LocationForm from '@/components/auxiliary/LocationForm'
+  import CategoryNew from '@/components/auxiliary/CategoryNew'
+  import CategoryEdit from '@/components/auxiliary/CategoryEdit'
+  import LocationNew from '@/components/auxiliary/LocationNew'
+  import LocationEdit from '@/components/auxiliary/LocationEdit'
   import HierarchicalList from '@/components/common/HierarchicalList'
+
+
   export default {
     components: {
-      'fmt-category-form': CategoryForm,
-      'fmt-location-form': LocationForm,
+      'fmt-category-form': CategoryNew,
+      'fmt-location-form': LocationNew,
       'fmt-hierarchical-list': HierarchicalList
     },
     async created() {
@@ -59,42 +57,68 @@
             'name': 'title',
             'label': 'Category',
             'type': 'translation',
-            'style': 'width:80%;'
+            'style': 'width:70%;cursor: pointer;',
+            'editLink': true
           },
           {
             'name': 'active',
             'label': 'Active',
-            'type': 'boolean',
+            'type': 'active',
             'style': 'width:20%; text-align: center !important;'
           }
         ],
         locationsFields: [{
-            'name': 'title',
-            'label': 'Country / Region / City',
-            'type': 'translation',
-            'style': 'width:100%;'
-          }
-        ]
+          'name': 'title',
+          'label': 'Country / Region / City',
+          'type': 'translation',
+          'style': 'width:90%;cursor: pointer;',
+          'editLink': true
+        }]
       }
     },
     computed: {
       categories() {
-        return this.$store.getters['auxiliary/categories']
+        return this.$_.orderBy(this.$store.getters['auxiliary/categories'], 'title.pt', 'asc')
       },
       locations() {
-        return this.$store.getters['auxiliary/geonames']
+        return this.$_.orderBy(this.$store.getters['auxiliary/geonames'], 'title.pt', 'asc')
       }
     },
     methods: {
-      openEditDialog(id) {
-        this.$dialog.prompt({
-          message: 'Edit item: '+ id,
-          inputAttrs: {
-            placeholder: 'e.g. Walter',
-            maxlength: 10
+      editCategoryModal(id) {
+        this.$modal.open({
+          parent: this,
+          component: CategoryEdit,
+          props: {
+            itemId: id,
+            data: this.categories
           },
-          onConfirm: (value) => this.$toast.open(`Your name is: ${value}`)
+          width: 500
         })
+      },
+      editLocationModal(id) {
+        this.$modal.open({
+          parent: this,
+          component: LocationEdit,
+          props: {
+            itemId: id,
+            data: this.locations
+          },
+          width: 500
+        })
+      },
+      deleteCategory(id) {
+        this.$store.dispatch('auxiliary/deleteCategory', id)
+      },
+      deleteLocation(id) {
+        this.$store.dispatch('auxiliary/deleteGeoname', id)
+      },
+      toggleCategory(item) {
+        const category = {
+          categoryId: item.id,
+          active: item.active
+        }
+        this.$store.dispatch('auxiliary/updateCategory', category)
       }
     }
   }
