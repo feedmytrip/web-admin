@@ -56,7 +56,7 @@ export default {
     'fmt-location-form': LocationNew,
     'fmt-hierarchical-list': HierarchicalList
   },
-  async created () {
+  async mounted () {
     const loading = this.$loading.open()
     this.$store.commit('setTitle', 'Auxiliary Data')
     this.$store.commit(

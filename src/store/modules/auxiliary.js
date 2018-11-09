@@ -11,8 +11,14 @@ const state = {
 }
 
 const getters = {
+  category: state => categoryId => {
+    return _.find(state.categories, { categoryId: categoryId })
+  },
   categories: state => {
     return state.categories
+  },
+  geoname: state => geonameId => {
+    return _.find(state.geonames, { geonameId: geonameId })
   },
   geonames: state => {
     return state.geonames
@@ -20,7 +26,7 @@ const getters = {
 }
 
 const actions = {
-  async getAuxiliaryData ({ commit, dispatch, rootGetters }) {
+  async getAuxiliaryData ({ dispatch }) {
     await dispatch('getAllGeonames')
     await dispatch('getAllCategories')
   },
@@ -104,7 +110,7 @@ const actions = {
         })
     })
   },
-  async deleteGeoname ({ commit, rootGetters }, geonameId) {
+  deleteGeoname ({ commit, rootGetters }, geonameId) {
     return new Promise((resolve, reject) => {
       axios
         .delete('/geonames/' + geonameId, {
@@ -115,7 +121,7 @@ const actions = {
           resolve()
         })
         .catch(err => {
-          console.log('teste: ' + err.response)
+          console.log(err)
           reject(err)
         })
     })
@@ -131,7 +137,7 @@ const actions = {
           resolve()
         })
         .catch(err => {
-          console.log('teste: ' + err.response)
+          console.log(err)
           reject(err)
         })
     })

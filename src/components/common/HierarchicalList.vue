@@ -6,9 +6,7 @@
           v-for="(field, index) in fields"
           :key="index"
           v-bind:style="field.style"
-        >
-          {{ field.label }}
-        </th>
+        >{{ field.label }}</th>
         <th v-if="deleteButton"></th>
       </tr>
     </thead>
@@ -26,8 +24,7 @@
           v-on:edit-table-row="edit"
           v-on:delete-table-row="deleteItem"
           v-on:toggle-active-table-row="toggleActive"
-        >
-        </fmt-hierarchical-row>
+        ></fmt-hierarchical-row>
         <template v-for="(child, firstIndex) in getFirstLevel(item[id])">
           <fmt-hierarchical-row
             :item="child"
@@ -43,11 +40,8 @@
             v-on:edit-table-row="edit"
             v-on:delete-table-row="deleteItem"
             v-on:toggle-active-table-row="toggleActive"
-          >
-          </fmt-hierarchical-row>
-          <template
-            v-for="(grandchild, secondIndex) in getSecondLevel(child[id])"
-          >
+          ></fmt-hierarchical-row>
+          <template v-for="(grandchild, secondIndex) in getSecondLevel(child[id])">
             <fmt-hierarchical-row
               :item="grandchild"
               :fields="fields"
@@ -58,8 +52,7 @@
               v-on:edit-table-row="edit"
               v-on:delete-table-row="deleteItem"
               v-on:toggle-active-table-row="toggleActive"
-            >
-            </fmt-hierarchical-row>
+            ></fmt-hierarchical-row>
           </template>
         </template>
       </template>
@@ -74,19 +67,50 @@ export default {
     'fmt-hierarchical-row': Row
   },
   props: {
-    data: Array,
-    fields: Array,
-    firstLevel: String,
-    secondLevel: String,
-    id: String,
-    emptyString: String,
-    deleteButton: Boolean
+    data: {
+      type: Array,
+      required: true
+    },
+    fields: {
+      type: Array,
+      required: true
+    },
+    id: {
+      type: String,
+      required: true
+    },
+    firstLevel: {
+      type: String,
+      default: ''
+    },
+    secondLevel: {
+      type: String,
+      default: ''
+    },
+    emptyString: {
+      type: String,
+      default: ''
+    },
+    deleteButton: {
+      type: Boolean,
+      default: false
+    },
+    editLink: {
+      type: Boolean,
+      default: false
+    }
   },
   methods: {
     getLevelZero () {
+      if (this.firstLevel === '') {
+        return this.data
+      }
       return this.$_.filter(this.data, { [this.firstLevel]: this.emptyString })
     },
     getFirstLevel (parentId) {
+      if (this.firstLevel === '') {
+        return []
+      }
       let filter = { [this.firstLevel]: parentId }
       if (!this.$_.isEmpty(this.secondLevel)) {
         filter = {
@@ -97,6 +121,9 @@ export default {
       return this.$_.filter(this.data, filter)
     },
     getSecondLevel (parentId) {
+      if (this.firstLevel === '' || this.secondLevel === '') {
+        return []
+      }
       return this.$_.filter(this.data, { [this.secondLevel]: parentId })
     },
     edit (id) {

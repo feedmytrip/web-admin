@@ -1,9 +1,9 @@
 <template>
   <div>
     <div v-if="type === 'translation'">
-      <span v-bind:style="{ paddingLeft: this.level * 20 + 'px' }">
-        {{ value.pt }} - {{ value.es }} - {{ value.en }}
-      </span>
+      <span
+        v-bind:style="{ paddingLeft: this.level * 20 + 'px' }"
+      >{{ value.pt }} - {{ value.es }} - {{ value.en }}</span>
     </div>
     <div v-if="type === 'text'"></div>
     <div class="field" v-if="type === 'active'">
@@ -23,12 +23,39 @@
       </span>
     </div>
     <div v-if="type === 'date'"></div>
+    <div v-if="type === 'location'">
+      <span>{{ getLocationNameById(value) }}</span>
+    </div>
+    <div v-if="type === 'category'">
+      <span>{{ getCategoryNameById(value) }}</span>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
-  props: ['type', 'value', 'level']
+  props: ['type', 'value', 'level'],
+  computed: {
+    languageCode () {
+      return this.$store.getters['auth/userLanguageCode']
+    }
+  },
+  methods: {
+    getCategoryNameById (id) {
+      const category = this.$store.getters['auxiliary/category'](id)
+      if (category) {
+        return category['title'][this.languageCode]
+      }
+      return ''
+    },
+    getLocationNameById (id) {
+      const location = this.$store.getters['auxiliary/geoname'](id)
+      if (location) {
+        return location['title'][this.languageCode]
+      }
+      return ''
+    }
+  }
 }
 </script>
 

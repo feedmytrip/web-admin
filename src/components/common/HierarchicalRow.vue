@@ -3,7 +3,7 @@
     <td
       v-for="(field, index) in fields"
       :key="index"
-      v-bind:style="field.style"
+      v-bind:style="field.editLink ? 'cursor: pointer;' + field.style : field.style"
       style="vertical-align: middle;"
       v-on="field.editLink ? { click: edit } : {}"
     >
@@ -14,7 +14,7 @@
         v-on="field.type === 'active' ? { 'toggle-active': toggleActive } : {}"
       ></fmt-field>
     </td>
-    <td style="width:5%;cursor: pointer;" @click="deleteItem">
+    <td style="width:2%;cursor: pointer;" @click="deleteItem">
       <a class="icon is-size-5 has-text-danger" v-if="deleteButton">
         <i class="fa fa-trash"></i>
       </a>

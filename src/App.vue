@@ -65,7 +65,9 @@
         </div>
       </section>
       <div class="has-background-white-ter fmt-content">
-        <div class="container is-fluid"><router-view></router-view></div>
+        <div class="container is-fluid">
+          <router-view></router-view>
+        </div>
       </div>
       <footer class="fmt-footer has-text-white">
         <div class="columns is-mobile">

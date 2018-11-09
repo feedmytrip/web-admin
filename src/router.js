@@ -9,9 +9,13 @@ import Login from './views/Login'
 import Dashboard from './views/Dashboard'
 import Highlights from './views/Highlights'
 import Trips from './views/Trips'
-import Events from './views/Events'
 import Users from './views/Users'
 import Auxiliary from './views/Auxiliary'
+import EventsHome from './views/event/Home'
+import EventsGlobal from './views/event/Global'
+import EventsUser from './views/event/User'
+import EventsGlobalEdit from './views/event/EditGlobal'
+import EventsUserEdit from './views/event/EditUser'
 
 Vue.use(Router)
 
@@ -41,8 +45,35 @@ const router = new Router({
     {
       path: '/events',
       name: 'Events',
-      component: Events,
-      meta: { requiresAuth: true }
+      meta: { requiresAuth: true },
+      component: EventsHome,
+      redirect: '/events/global',
+      children: [
+        {
+          path: 'global',
+          name: 'GlobalEvents',
+          component: EventsGlobal,
+          meta: { requiresAuth: true }
+        },
+        {
+          path: 'global/:id',
+          name: 'EditGlobalEvents',
+          component: EventsGlobalEdit,
+          meta: { requiresAuth: true }
+        },
+        {
+          path: 'users',
+          name: 'UsersEvents',
+          component: EventsUser,
+          meta: { requiresAuth: true }
+        },
+        {
+          path: 'users/:id',
+          name: 'EditUsersEvents',
+          component: EventsUserEdit,
+          meta: { requiresAuth: true }
+        }
+      ]
     },
     {
       path: '/users',
