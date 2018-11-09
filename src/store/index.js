@@ -9,30 +9,30 @@ Vue.use(Vuex)
 const debug = process.env.NODE_ENV !== 'production'
 
 export default new Vuex.Store({
-    state: {
-        title: '',
-        subtitle: ''
+  state: {
+    title: '',
+    subtitle: ''
+  },
+  getters: {
+    title: state => {
+      return state.title
     },
-    getters: {
-        title: (state) => {
-            return state.title
-        },
-        subtitle: (state) => {
-            return state.subtitle
-        }
+    subtitle: state => {
+      return state.subtitle
+    }
+  },
+  mutations: {
+    setTitle (state, title) {
+      state.title = title
     },
-    mutations: {
-        setTitle(state, title) {
-            state.title = title
-        },
-        setSubtitle(state, subtitle) {
-            state.subtitle = subtitle
-        }
-    },
-    modules: {
-        auth,
-        highlights,
-        auxiliary
-    },
-    strict: debug
+    setSubtitle (state, subtitle) {
+      state.subtitle = subtitle
+    }
+  },
+  modules: {
+    auth,
+    highlights,
+    auxiliary
+  },
+  strict: debug
 })

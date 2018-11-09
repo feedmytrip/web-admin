@@ -1,24 +1,27 @@
 import { Auth } from 'aws-amplify'
- 
+
 const state = {
   user: null,
-  signedIn : false
+  signedIn: false
 }
 
 const getters = {
-  userSignedIn: (state) => {
+  userSignedIn: state => {
     return state.signedIn
   },
-  token: (state) => {
+  token: state => {
     if (state.user) {
-      return state.user.getSignInUserSession().getIdToken().getJwtToken()
+      return state.user
+        .getSignInUserSession()
+        .getIdToken()
+        .getJwtToken()
     }
     return ''
   },
-  user: (state) => {
+  user: state => {
     return state.user
   },
-  userLanguageCode: (state) => {
+  userLanguageCode: state => {
     if (state.user) {
       return state.user.attributes['custom:language_code']
     }
@@ -26,16 +29,16 @@ const getters = {
 }
 
 const actions = {
-  login ({ commit, dispatch }, credentials ) {
-    return new Promise((resolve, reject) => {  
+  login ({ commit, dispatch }, credentials) {
+    return new Promise((resolve, reject) => {
       Auth.signIn(credentials.username, credentials.password)
-      .then(user => {
-        commit('setUser', user)
-        resolve()  
-      })
-      .catch(err => {
-        reject(err)
-      })
+        .then(user => {
+          commit('setUser', user)
+          resolve()
+        })
+        .catch(err => {
+          reject(err)
+        })
     })
   }
 }

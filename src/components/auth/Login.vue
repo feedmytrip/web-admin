@@ -3,11 +3,16 @@
     <div class="column is-one-third">
       <div class="box">
         <div class="has-text-centered" style="margin-bottom: 20px">
-          <img src="@/assets/logo_200x200.png" style="border-radius: 4px;"/>
+          <img src="@/assets/logo_200x200.png" style="border-radius: 4px;" />
         </div>
         <div class="field">
           <p class="control has-icons-left has-icons-right">
-            <input v-model="credentials.username" class="input" type="text" placeholder="Username">
+            <input
+              v-model="credentials.username"
+              class="input"
+              type="text"
+              placeholder="Username"
+            />
             <span class="icon is-small is-left">
               <i class="fa fa-user"></i>
             </span>
@@ -15,7 +20,13 @@
         </div>
         <div class="field">
           <p class="control has-icons-left">
-            <input v-model="credentials.password" class="input" type="password" placeholder="Password" @keyup.enter="signIn">
+            <input
+              v-model="credentials.password"
+              class="input"
+              type="password"
+              placeholder="Password"
+              @keyup.enter="signIn"
+            />
             <span class="icon is-small is-left">
               <i class="fa fa-lock"></i>
             </span>
@@ -23,9 +34,7 @@
         </div>
         <div class="field">
           <p class="control has-text-right">
-            <button class="button is-link" @click="signIn">
-              Sign In
-            </button>
+            <button class="button is-link" @click="signIn">Sign In</button>
           </p>
         </div>
       </div>
@@ -36,7 +45,7 @@
 <script>
 import { Auth } from 'aws-amplify'
 export default {
-  data() {
+  data () {
     return {
       credentials: {
         username: '',
@@ -44,18 +53,19 @@ export default {
       }
     }
   },
-  created() {
+  created () {
     Auth.currentAuthenticatedUser()
       .then(user => {
         this.$store.commit('auth/setUser', user)
         this.$router.push('/')
       })
-      .catch(err => console.log(err));
+      .catch(err => console.log(err))
   },
   methods: {
-    signIn() {
+    signIn () {
       const loading = this.$loading.open()
-      this.$store.dispatch('auth/login', this.credentials)
+      this.$store
+        .dispatch('auth/login', this.credentials)
         .then(result => {
           loading.close()
           this.$router.push('/')
@@ -64,11 +74,11 @@ export default {
           console.log(err)
           loading.close()
           this.$toast.open({
-              duration: 3000,
-              message: err.message,
-              type: 'is-danger'
+            duration: 3000,
+            message: err.message,
+            type: 'is-danger'
           })
-        });
+        })
     }
   }
 }

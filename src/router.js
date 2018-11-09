@@ -24,37 +24,37 @@ const router = new Router({
       path: '/',
       name: 'Dashboard',
       component: Dashboard,
-      meta: { requiresAuth: true}
+      meta: { requiresAuth: true }
     },
     {
       path: '/highlights',
       name: 'Highlights',
       component: Highlights,
-      meta: { requiresAuth: true}
+      meta: { requiresAuth: true }
     },
     {
       path: '/trips',
       name: 'Trips',
       component: Trips,
-      meta: { requiresAuth: true}
+      meta: { requiresAuth: true }
     },
     {
       path: '/events',
       name: 'Events',
       component: Events,
-      meta: { requiresAuth: true}
+      meta: { requiresAuth: true }
     },
     {
       path: '/users',
       name: 'Users',
       component: Users,
-      meta: { requiresAuth: true}
+      meta: { requiresAuth: true }
     },
     {
       path: '/auxiliary',
       name: 'Auxiliary Data',
       component: Auxiliary,
-      meta: { requiresAuth: true}
+      meta: { requiresAuth: true }
     },
     {
       path: '/login',
@@ -68,20 +68,21 @@ router.beforeResolve(async (to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
     console.log(Store.getters['auth/userSignedIn'])
     if (Store.getters['auth/userSignedIn']) {
-      next();
+      next()
     } else {
       await Auth.currentAuthenticatedUser()
-      .then(user => {
-        Store.commit('auth/setUser', user)
-        next()
-      })
-      .catch(err => {
-        next({path:'/login'});
-      })
+        .then(user => {
+          Store.commit('auth/setUser', user)
+          next()
+        })
+        .catch(err => {
+          console.log(err)
+          next({ path: '/login' })
+        })
     }
   } else {
     next()
   }
 })
 
-export default router;
+export default router
