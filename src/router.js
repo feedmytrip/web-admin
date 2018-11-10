@@ -97,11 +97,10 @@ const router = new Router({
 
 router.beforeResolve(async (to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    console.log(Store.getters['auth/userSignedIn'])
     if (Store.getters['auth/userSignedIn']) {
       next()
     } else {
-      await Auth.currentAuthenticatedUser()
+      Auth.currentAuthenticatedUser()
         .then(user => {
           Store.commit('auth/setUser', user)
           next()

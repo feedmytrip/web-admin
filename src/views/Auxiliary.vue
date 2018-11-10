@@ -9,7 +9,7 @@
             <fmt-hierarchical-list
               :data="categories"
               :fields="categoriesFields"
-              empty-string=""
+              empty-string
               first-level="mainCategoryId"
               id="categoryId"
               :delete-button="true"
@@ -56,15 +56,17 @@ export default {
     'fmt-location-form': LocationNew,
     'fmt-hierarchical-list': HierarchicalList
   },
-  async mounted () {
-    const loading = this.$loading.open()
+  async created () {
     this.$store.commit('setTitle', 'Auxiliary Data')
     this.$store.commit(
       'setSubtitle',
       'Manages system categories and locations'
     )
-    await this.$store.dispatch('auxiliary/getAuxiliaryData')
-    loading.close()
+    if (!this.$store.getters['initialized']) {
+      const loading = this.$loading.open()
+      await this.$store.dispatch('initStore')
+      loading.close()
+    }
   },
   data () {
     return {

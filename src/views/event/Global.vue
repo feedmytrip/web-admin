@@ -25,14 +25,16 @@ export default {
     'fmt-hierarchical-list': HierarchicalList,
     'fmt-event-form': GlobalEventNew
   },
-  async mounted () {
-    const loading = this.$loading.open()
-    await this.$store.dispatch('events/getAll')
-    await this.$store.dispatch('auxiliary/getAuxiliaryData')
-    loading.close()
+  async created () {
+    if (!this.$store.getters['initialized']) {
+      const loading = this.$loading.open()
+      await this.$store.dispatch('initStore')
+      loading.close()
+    }
   },
   data () {
     return {
+      loading: false,
       eventsFields: [
         {
           name: 'title',

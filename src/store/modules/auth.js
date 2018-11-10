@@ -29,7 +29,7 @@ const getters = {
 }
 
 const actions = {
-  login ({ commit, dispatch }, credentials) {
+  login ({ commit }, credentials) {
     return new Promise((resolve, reject) => {
       Auth.signIn(credentials.username, credentials.password)
         .then(user => {

@@ -3,51 +3,33 @@
     <div v-if="!signedIn">
       <section class="hero fmt-hero-background is-fullheight">
         <div class="hero-body">
-          <div class="container"><router-view></router-view></div>
+          <div class="container">
+            <router-view></router-view>
+          </div>
         </div>
       </section>
     </div>
     <div style="padding-top: 3.25rem;" v-if="signedIn">
-      <header
-        class="navbar is-white is-fixed-top"
-        style="background-color: white;"
-      >
+      <header class="navbar is-white is-fixed-top" style="background-color: white;">
         <div class="container is-fluid">
           <div class="navbar-brand">
-            <router-link
-              to="/"
-              class="navbar-item"
-              style="background-color: white;"
-            >
-              FeedMyTrip
-            </router-link>
+            <router-link to="/" class="navbar-item" style="background-color: white;">FeedMyTrip</router-link>
             <span class="navbar-burger burger" data-target="navbarMenuHeroC">
-              <span></span> <span></span> <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
             </span>
           </div>
           <div id="navbarMenuHeroC" class="navbar-menu">
             <div class="navbar-end">
-              <router-link to="/highlights" class="navbar-item">
-                Highlights
-              </router-link>
-              <router-link to="/trips" class="navbar-item"> Trips </router-link>
-              <router-link to="/events" class="navbar-item">
-                Events
-              </router-link>
-              <router-link to="/users" class="navbar-item"> Users </router-link>
-              <router-link to="/auxiliary" class="navbar-item">
-                Auxiliary
-              </router-link>
+              <router-link to="/highlights" class="navbar-item">Highlights</router-link>
+              <router-link to="/trips" class="navbar-item">Trips</router-link>
+              <router-link to="/events" class="navbar-item">Events</router-link>
+              <router-link to="/users" class="navbar-item">Users</router-link>
+              <router-link to="/auxiliary" class="navbar-item">Auxiliary</router-link>
               <span class="navbar-item">
-                <b-tooltip
-                  label="Sign Out"
-                  type="is-light"
-                  position="is-bottom"
-                >
-                  <button
-                    class="button is-success is-inverted"
-                    @click="signOut"
-                  >
+                <b-tooltip label="Sign Out" type="is-light" position="is-bottom">
+                  <button class="button is-success is-inverted" @click="signOut">
                     <i class="fa fa-sign-out"></i>
                   </button>
                 </b-tooltip>
@@ -71,7 +53,9 @@
       </div>
       <footer class="fmt-footer has-text-white">
         <div class="columns is-mobile">
-          <div class="column"><p>FeedMyTrip Admin - v1.0</p></div>
+          <div class="column">
+            <p>FeedMyTrip Admin - v1.0</p>
+          </div>
           <div class="column has-text-right">
             <p>Language: {{ languageCode }}</p>
           </div>

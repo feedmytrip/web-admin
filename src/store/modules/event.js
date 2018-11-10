@@ -12,6 +12,9 @@ const state = {
 const getters = {
   all: state => {
     return state.events
+  },
+  getEvent: state => id => {
+    return _.find(state.events, ['eventId', id])
   }
 }
 

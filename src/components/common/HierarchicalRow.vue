@@ -48,7 +48,6 @@ export default {
       this.$emit('delete-table-row', this.item[this.id])
     },
     toggleActive (active) {
-      console.log('#1: ' + active)
       this.$emit('toggle-active-table-row', {
         id: this.item[this.id],
         active: active === true
