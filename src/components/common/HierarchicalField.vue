@@ -11,7 +11,7 @@
         :value="value"
         size="is-small"
         type="is-info"
-        v-on:input.native="$emit('toggle-active', $event.target.value);"
+        v-on:input.native="$emit('toggle-active', !value);"
       ></b-switch>
     </div>
     <div v-if="type === 'boolean'">
