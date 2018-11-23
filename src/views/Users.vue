@@ -1,5 +1,5 @@
 <template>
-  <p>Events</p>
+  <p>Users</p>
 </template>
 
 <script>

@@ -10,7 +10,9 @@ import Dashboard from './views/Dashboard'
 import Highlights from './views/Highlights'
 import Trips from './views/Trips'
 import Users from './views/Users'
-import Auxiliary from './views/Auxiliary'
+import AuxiliaryHome from './views/auxiliary/Home'
+import AuxiliaryCategories from './views/auxiliary/Category'
+import AuxiliaryLocations from './views/auxiliary/Location'
 import EventsHome from './views/event/Home'
 import EventsGlobal from './views/event/Global'
 import EventsUser from './views/event/User'
@@ -76,15 +78,30 @@ const router = new Router({
       ]
     },
     {
+      path: '/auxiliary',
+      name: 'Auxiliary',
+      meta: { requiresAuth: true },
+      component: AuxiliaryHome,
+      redirect: '/auxiliary/categories',
+      children: [
+        {
+          path: 'categories',
+          name: 'Categories',
+          component: AuxiliaryCategories,
+          meta: { requiresAuth: true }
+        },
+        {
+          path: 'locations',
+          name: 'Locations',
+          component: AuxiliaryLocations,
+          meta: { requiresAuth: true }
+        }
+      ]
+    },
+    {
       path: '/users',
       name: 'Users',
       component: Users,
-      meta: { requiresAuth: true }
-    },
-    {
-      path: '/auxiliary',
-      name: 'Auxiliary Data',
-      component: Auxiliary,
       meta: { requiresAuth: true }
     },
     {

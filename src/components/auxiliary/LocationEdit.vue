@@ -14,15 +14,13 @@
           <label class="label is-small">Country</label>
           <div class="control is-expanded">
             <div class="select is-fullwidth is-small">
-              <select name="country" v-model="geoname.countryId">
+              <select name="country" v-model="location.country_id">
                 <option value=""></option>
                 <option
                   v-for="(object, index) in countries"
                   :key="index"
-                  :value="object.geonameId"
-                >
-                  {{ object["title"][languageCode] }}
-                </option>
+                  :value="object.id"
+                >{{ object["title"][languageCode] }}</option>
               </select>
             </div>
           </div>
@@ -31,15 +29,13 @@
           <label class="label is-small">Region</label>
           <div class="control is-expanded">
             <div class="select is-fullwidth is-small">
-              <select name="country" v-model="geoname.regionId">
+              <select name="country" v-model="location.region_id">
                 <option value=""></option>
                 <option
                   v-for="(object, index) in regions"
                   :key="index"
-                  :value="object.geonameId"
-                >
-                  {{ object["title"][languageCode] }}
-                </option>
+                  :value="object.id"
+                >{{ object["title"][languageCode] }}</option>
               </select>
             </div>
           </div>
@@ -51,8 +47,8 @@
               class="input is-small"
               type="text"
               placeholder="PT"
-              v-model="geoname.title.pt"
-            />
+              v-model="location['title.pt']"
+            >
           </div>
         </div>
         <div class="field">
@@ -62,8 +58,8 @@
               class="input is-small"
               type="text"
               placeholder="PT"
-              v-model="geoname.title.es"
-            />
+              v-model="location['title.es']"
+            >
           </div>
         </div>
         <div class="field">
@@ -73,19 +69,14 @@
               class="input is-small"
               type="text"
               placeholder="PT"
-              v-model="geoname.title.en"
-            />
+              v-model="location['title.en']"
+            >
           </div>
         </div>
       </div>
     </div>
     <footer class="card-footer is-size-7" v-if="!loading">
-      <a
-        href="#"
-        class="card-footer-item has-text-primary is-loading"
-        @click="update"
-        >Save</a
-      >
+      <a href="#" class="card-footer-item has-text-primary is-loading" @click="update">Save</a>
       <a href="#" class="card-footer-item" @click="$parent.close();">Cancel</a>
     </footer>
   </div>
@@ -95,29 +86,26 @@
 export default {
   props: ['itemId', 'data'],
   created () {
-    const index = this.$_.findIndex(this.data, { geonameId: this.itemId })
-    this.geoname = JSON.parse(JSON.stringify(this.data[index]))
+    const index = this.$_.findIndex(this.data, { id: this.itemId })
+    this.location['title.pt'] = this.data[index].title.pt
+    this.location['title.es'] = this.data[index].title.es
+    this.location['title.en'] = this.data[index].title.en
+    this.location.region_id = this.data[index].region_id
+    this.location.country_id = this.data[index].country_id
+    this.location.id = this.itemId
   },
   data () {
     return {
       loading: false,
-      geoname: {
-        countryId: '',
-        regionId: '',
-        title: {
-          pt: '',
-          es: '',
-          en: ''
-        }
-      }
+      location: {}
     }
   },
   computed: {
     countries () {
       return this.$_.orderBy(
         this.$_.filter(this.data, {
-          countryId: 'none',
-          regionId: 'none'
+          country_id: 'none',
+          region_id: 'none'
         }),
         'title' + this.languageCode,
         'asc'
@@ -126,8 +114,8 @@ export default {
     regions () {
       return this.$_.orderBy(
         this.$_.filter(this.data, {
-          countryId: this.geoname.countryId,
-          regionId: 'none'
+          country_id: this.location.country_id,
+          region_id: 'none'
         }),
         'title' + this.languageCode,
         'asc'
@@ -141,7 +129,7 @@ export default {
     update () {
       this.loading = true
       this.$store
-        .dispatch('auxiliary/updateGeoname', this.geoname)
+        .dispatch('auxiliary/updateLocation', this.location)
         .then(result => {
           this.loading = false
           this.$parent.close()

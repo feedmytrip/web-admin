@@ -6,36 +6,40 @@ const axios = Axios.create({
 })
 
 const state = {
-  categories: [],
-  geonames: []
+  categories: {
+    metadata: {},
+    data: [],
+    errors: []
+  },
+  locations: {
+    metadata: {},
+    data: [],
+    errors: []
+  }
 }
 
 const getters = {
-  category: state => categoryId => {
-    return _.find(state.categories, { categoryId: categoryId })
+  category: state => id => {
+    return _.find(state.categories.data, { id: id })
   },
   categories: state => {
-    return state.categories
+    return state.categories.data
   },
-  geoname: state => geonameId => {
-    return _.find(state.geonames, { geonameId: geonameId })
+  location: state => id => {
+    return _.find(state.locations.data, { id: id })
   },
-  geonames: state => {
-    return state.geonames
+  locations: state => {
+    return state.locations.data
   }
 }
 
 const actions = {
-  async getAuxiliaryData ({ dispatch }) {
-    await dispatch('getAllGeonames')
-    await dispatch('getAllCategories')
-  },
-  async getAllGeonames ({ commit, rootGetters }) {
+  async getAllLocations ({ commit, rootGetters }) {
     try {
-      const response = await axios.get('/geonames', {
+      const response = await axios.get('/locations', {
         headers: { Authorization: rootGetters['auth/token'] }
       })
-      commit('initGeonames', response.data)
+      commit('initlocations', response.data)
     } catch (error) {
       console.log(error)
     }
@@ -50,14 +54,15 @@ const actions = {
       console.log(error)
     }
   },
-  newGeoname ({ commit, rootGetters }, geoname) {
+  newLocation ({ commit, rootGetters }, location) {
+    console.log(JSON.stringify(location))
     return new Promise((resolve, reject) => {
       axios
-        .post('/geonames', JSON.stringify(geoname), {
+        .post('/locations', JSON.stringify(location), {
           headers: { Authorization: rootGetters['auth/token'] }
         })
         .then(response => {
-          commit('addGeoname', response.data)
+          commit('addlocation', response.data)
           resolve()
         })
         .catch(err => {
@@ -80,14 +85,14 @@ const actions = {
         })
     })
   },
-  updateGeoname ({ commit, rootGetters }, geoname) {
+  updateLocation ({ commit, rootGetters }, location) {
     return new Promise((resolve, reject) => {
       axios
-        .patch('/geonames/' + geoname.geonameId, JSON.stringify(geoname), {
+        .patch('/locations/' + location.id, JSON.stringify(location), {
           headers: { Authorization: rootGetters['auth/token'] }
         })
         .then(response => {
-          commit('updateGeoname', response.data)
+          commit('updateLocation', response.data)
           resolve()
         })
         .catch(err => {
@@ -98,7 +103,7 @@ const actions = {
   updateCategory ({ commit, rootGetters }, category) {
     return new Promise((resolve, reject) => {
       axios
-        .patch('/categories/' + category.categoryId, JSON.stringify(category), {
+        .patch('/categories/' + category.id, JSON.stringify(category), {
           headers: { Authorization: rootGetters['auth/token'] }
         })
         .then(response => {
@@ -110,14 +115,14 @@ const actions = {
         })
     })
   },
-  deleteGeoname ({ commit, rootGetters }, geonameId) {
+  deleteLocation ({ commit, rootGetters }, id) {
     return new Promise((resolve, reject) => {
       axios
-        .delete('/geonames/' + geonameId, {
+        .delete('/locations/' + id, {
           headers: { Authorization: rootGetters['auth/token'] }
         })
         .then(response => {
-          commit('deleteGeoname', geonameId)
+          commit('deleteLocation', id)
           resolve()
         })
         .catch(err => {
@@ -126,14 +131,14 @@ const actions = {
         })
     })
   },
-  deleteCategory ({ commit, rootGetters }, categoryId) {
+  deleteCategory ({ commit, rootGetters }, id) {
     return new Promise((resolve, reject) => {
       axios
-        .delete('/categories/' + categoryId, {
+        .delete('/categories/' + id, {
           headers: { Authorization: rootGetters['auth/token'] }
         })
         .then(response => {
-          commit('deleteCategory', categoryId)
+          commit('deleteCategory', id)
           resolve()
         })
         .catch(err => {
@@ -145,46 +150,46 @@ const actions = {
 }
 
 const mutations = {
-  initGeonames (state, geonames) {
-    state.geonames = [].concat(geonames)
+  initlocations (state, locations) {
+    state.locations = locations
   },
-  addGeoname (state, geoname) {
-    state.geonames.push(geoname)
+  addlocation (state, location) {
+    state.locations.data.push(location)
   },
-  updateGeoname (state, geoname) {
-    const oldIndex = _.findIndex(state.geonames, {
-      geonameId: geoname.geonameId
+  updateLocation (state, location) {
+    const oldIndex = _.findIndex(state.locations.data, {
+      id: location.id
     })
     if (oldIndex !== -1) {
-      state.geonames.splice(oldIndex, 1)
+      state.locations.data.splice(oldIndex, 1)
     }
-    state.geonames.push(geoname)
+    state.locations.data.push(location)
   },
-  deleteGeoname (state, geonameId) {
-    const index = _.findIndex(state.geonames, { geonameId: geonameId })
+  deleteLocation (state, id) {
+    const index = _.findIndex(state.locations.data, { id: id })
     if (index !== -1) {
-      state.geonames.splice(index, 1)
+      state.locations.data.splice(index, 1)
     }
   },
   initCategories (state, categories) {
-    state.categories = [].concat(categories)
+    state.categories = categories
   },
   addCategory (state, category) {
-    state.categories.push(category)
+    state.categories.data.push(category)
   },
   updateCategory (state, category) {
-    const oldIndex = _.findIndex(state.categories, {
-      categoryId: category.categoryId
+    const oldIndex = _.findIndex(state.categories.data, {
+      id: category.id
     })
     if (oldIndex !== -1) {
-      state.categories.splice(oldIndex, 1)
+      state.categories.data.splice(oldIndex, 1)
     }
-    state.categories.push(category)
+    state.categories.data.push(category)
   },
-  deleteCategory (state, categoryId) {
-    const index = _.findIndex(state.categories, { categoryId: categoryId })
+  deleteCategory (state, id) {
+    const index = _.findIndex(state.categories.data, { id: id })
     if (index !== -1) {
-      state.categories.splice(index, 1)
+      state.categories.data.splice(index, 1)
     }
   }
 }

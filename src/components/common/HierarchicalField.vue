@@ -5,10 +5,15 @@
         v-bind:style="{ paddingLeft: this.level * 20 + 'px' }"
       >{{ value.pt }} - {{ value.es }} - {{ value.en }}</span>
     </div>
+    <div v-if="type === 'user'">
+      <span>{{ value.first_name }} {{ value.last_name }}</span>
+    </div>
     <div v-if="type === 'text'"></div>
     <div class="field" v-if="type === 'active'">
       <b-switch
-        :value="value"
+        v-model="value"
+        true-value="1"
+        false-value="0"
         size="is-small"
         type="is-info"
         v-on:input.native="$emit('toggle-active', !value);"
@@ -22,12 +27,9 @@
         <i class="fa fa-check-circle"></i>
       </span>
     </div>
-    <div v-if="type === 'date'"></div>
-    <div v-if="type === 'location'">
-      <span>{{ getLocationNameById(value) }}</span>
-    </div>
-    <div v-if="type === 'category'">
-      <span>{{ getCategoryNameById(value) }}</span>
+    <div v-if="type === 'date'">{{ formatedDate }}</div>
+    <div v-if="type === 'translation_language_code'">
+      <span>{{ value[languageCode] }}</span>
     </div>
   </div>
 </template>
@@ -38,22 +40,9 @@ export default {
   computed: {
     languageCode () {
       return this.$store.getters['auth/userLanguageCode']
-    }
-  },
-  methods: {
-    getCategoryNameById (id) {
-      const category = this.$store.getters['auxiliary/category'](id)
-      if (category) {
-        return category['title'][this.languageCode]
-      }
-      return ''
     },
-    getLocationNameById (id) {
-      const location = this.$store.getters['auxiliary/geoname'](id)
-      if (location) {
-        return location['title'][this.languageCode]
-      }
-      return ''
+    formatedDate () {
+      return this.$moment(this.value).format('DD-MM-YYYY HH:mm:ss')
     }
   }
 }

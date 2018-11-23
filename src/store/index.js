@@ -12,8 +12,7 @@ const debug = process.env.NODE_ENV !== 'production'
 export default new Vuex.Store({
   state: {
     title: '',
-    subtitle: '',
-    initialized: false
+    subtitle: ''
   },
   getters: {
     title: state => {
@@ -21,19 +20,6 @@ export default new Vuex.Store({
     },
     subtitle: state => {
       return state.subtitle
-    },
-    initialized: state => {
-      return state.initialized
-    }
-  },
-  actions: {
-    initStore ({ dispatch, commit }) {
-      return new Promise(async (resolve, reject) => {
-        await dispatch('events/getAll')
-        await dispatch('auxiliary/getAuxiliaryData')
-        commit('setInitialized', true)
-        resolve()
-      })
     }
   },
   mutations: {
@@ -42,9 +28,6 @@ export default new Vuex.Store({
     },
     setSubtitle (state, subtitle) {
       state.subtitle = subtitle
-    },
-    setInitialized (state, value) {
-      state.initialized = value
     }
   },
   modules: {

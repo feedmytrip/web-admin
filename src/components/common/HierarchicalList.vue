@@ -89,10 +89,6 @@ export default {
       type: String,
       default: ''
     },
-    emptyString: {
-      type: String,
-      default: ''
-    },
     deleteButton: {
       type: Boolean,
       default: false
@@ -107,7 +103,7 @@ export default {
       if (this.firstLevel === '') {
         return this.data
       }
-      return this.$_.filter(this.data, { [this.firstLevel]: this.emptyString })
+      return this.$_.filter(this.data, { [this.firstLevel]: '' })
     },
     getFirstLevel (parentId) {
       if (this.firstLevel === '') {
@@ -117,7 +113,7 @@ export default {
       if (!this.$_.isEmpty(this.secondLevel)) {
         filter = {
           [this.firstLevel]: parentId,
-          [this.secondLevel]: this.emptyString
+          [this.secondLevel]: ''
         }
       }
       return this.$_.filter(this.data, filter)

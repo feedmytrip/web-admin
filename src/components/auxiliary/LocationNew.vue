@@ -5,15 +5,13 @@
         <label class="label is-small">Country</label>
         <div class="control is-expanded">
           <div class="select is-fullwidth is-small">
-            <select name="country" v-model="geoname.countryId">
+            <select name="country" v-model="locations.country_id">
               <option value=""></option>
               <option
                 v-for="(object, index) in countries"
                 :key="index"
-                :value="object.geonameId"
-              >
-                {{ object["title"][languageCode] }}
-              </option>
+                :value="object.id"
+              >{{ object["title"][languageCode] }}</option>
             </select>
           </div>
         </div>
@@ -22,15 +20,13 @@
         <label class="label is-small">Region</label>
         <div class="control is-expanded">
           <div class="select is-fullwidth is-small">
-            <select name="country" v-model="geoname.regionId">
+            <select name="country" v-model="locations.region_id">
               <option value=""></option>
               <option
                 v-for="(object, index) in regions"
                 :key="index"
-                :value="object.geonameId"
-              >
-                {{ object["title"][languageCode] }}
-              </option>
+                :value="object.id"
+              >{{ object["title"][languageCode] }}</option>
             </select>
           </div>
         </div>
@@ -42,9 +38,9 @@
             class="input is-small"
             type="text"
             placeholder="Name"
-            v-model="geoname['title'][languageCode]"
+            v-model="locations['title'][languageCode]"
             @keyup.enter="save"
-          />
+          >
           <span class="icon is-small is-right">
             <i class="fa fa-check"></i>
           </span>
@@ -52,13 +48,7 @@
       </div>
       <div class="field is-narrow">
         <p class="control" style="padding-top: 24px;">
-          <a
-            class="button is-small is-info"
-            @click="save"
-            :class="loading ? 'is-loading' : ''"
-          >
-            New
-          </a>
+          <a class="button is-small is-info" @click="save" :class="loading ? 'is-loading' : ''">New</a>
         </p>
       </div>
     </div>
@@ -74,9 +64,9 @@ export default {
     return {
       name: '',
       loading: false,
-      geoname: {
-        countryId: '',
-        regionId: '',
+      locations: {
+        country_id: '',
+        region_id: '',
         title: {
           pt: '',
           es: '',
@@ -89,8 +79,8 @@ export default {
     countries () {
       return this.$_.orderBy(
         this.$_.filter(this.data, {
-          countryId: 'none',
-          regionId: 'none'
+          country_id: '',
+          region_id: ''
         }),
         'title' + this.languageCode,
         'asc'
@@ -99,8 +89,8 @@ export default {
     regions () {
       return this.$_.orderBy(
         this.$_.filter(this.data, {
-          countryId: this.geoname.countryId,
-          regionId: 'none'
+          country_id: this.locations.country_id,
+          region_id: ''
         }),
         'title' + this.languageCode,
         'asc'
@@ -114,7 +104,7 @@ export default {
     save () {
       this.loading = true
       this.$store
-        .dispatch('auxiliary/newGeoname', this.geoname)
+        .dispatch('auxiliary/newLocation', this.locations)
         .then(result => {
           this.loading = false
         })

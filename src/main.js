@@ -51,6 +51,7 @@ Vue.use(AmplifyPlugin, AmplifyModules)
 
 Vue.config.productionTip = false
 
+moment.locale('pt')
 Vue.prototype.$moment = moment
 Vue.prototype.$_ = lodash
 

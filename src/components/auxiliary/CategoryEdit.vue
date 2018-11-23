@@ -14,14 +14,13 @@
           <label class="label is-small">Main Category</label>
           <div class="control is-expanded">
             <div class="select is-fullwidth is-small">
-              <select name="country" v-model="category.mainCategoryId">
+              <select name="country" v-model="category.parent_id">
                 <option value=""></option>
                 <option
                   v-for="(object, index) in mainCategories"
                   :key="index"
-                  :value="object.categoryId"
-                  >{{ object["title"][languageCode] }}</option
-                >
+                  :value="object.id"
+                >{{ object["title"][languageCode] }}</option>
               </select>
             </div>
           </div>
@@ -33,8 +32,8 @@
               class="input is-small"
               type="text"
               placeholder="PT"
-              v-model="category.title.pt"
-            />
+              v-model="category['title.pt']"
+            >
           </div>
         </div>
         <div class="field">
@@ -44,8 +43,8 @@
               class="input is-small"
               type="text"
               placeholder="PT"
-              v-model="category.title.es"
-            />
+              v-model="category['title.es']"
+            >
           </div>
         </div>
         <div class="field">
@@ -55,19 +54,14 @@
               class="input is-small"
               type="text"
               placeholder="PT"
-              v-model="category.title.en"
-            />
+              v-model="category['title.en']"
+            >
           </div>
         </div>
       </div>
     </div>
     <footer class="card-footer is-size-7" v-if="!loading">
-      <a
-        href="#"
-        class="card-footer-item has-text-primary is-loading"
-        @click="update"
-        >Save</a
-      >
+      <a href="#" class="card-footer-item has-text-primary is-loading" @click="update">Save</a>
       <a href="#" class="card-footer-item" @click="$parent.close();">Cancel</a>
     </footer>
   </div>
@@ -77,25 +71,23 @@
 export default {
   props: ['itemId', 'data'],
   created () {
-    const index = this.$_.findIndex(this.data, { categoryId: this.itemId })
-    this.category = JSON.parse(JSON.stringify(this.data[index]))
+    const index = this.$_.findIndex(this.data, { id: this.itemId })
+    this.category['title.pt'] = this.data[index].title.pt
+    this.category['title.es'] = this.data[index].title.es
+    this.category['title.en'] = this.data[index].title.en
+    this.category.id = this.itemId
+    this.category.parent_id = this.data[index].parent_id
   },
   data () {
     return {
       loading: false,
-      category: {
-        title: {
-          pt: '',
-          es: '',
-          en: ''
-        }
-      }
+      category: {}
     }
   },
   computed: {
     mainCategories () {
       return this.$_.orderBy(
-        this.$_.filter(this.data, { mainCategoryId: '' }),
+        this.$_.filter(this.data, { parent_id: '' }),
         'title' + this.languageCode,
         'asc'
       )
