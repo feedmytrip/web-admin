@@ -29,7 +29,7 @@ export default {
     'fmt-hierarchical-list': HierarchicalList
   },
   async created () {
-    if (this.$store.getters['auxiliary/locations'].length === 0) {
+    if (this.$store.getters['auxiliary/locations'].data.length === 0) {
       const loading = this.$loading.open()
       await this.$store.dispatch('auxiliary/getAllLocations')
       loading.close()
@@ -51,7 +51,7 @@ export default {
   computed: {
     locations () {
       return this.$_.orderBy(
-        this.$store.getters['auxiliary/locations'],
+        this.$store.getters['auxiliary/locations'].data,
         'title.pt',
         'asc'
       )

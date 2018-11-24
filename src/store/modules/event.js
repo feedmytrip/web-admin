@@ -6,7 +6,19 @@ const axios = Axios.create({
 })
 
 const state = {
-  events: []
+  events: {
+    metadata: {
+      page: 1,
+      total: 0,
+      total_filtered: 0,
+      records_per_page: 30,
+      source: 'event'
+    },
+    data: [],
+    errors: []
+  },
+  filter: '',
+  page: 1
 }
 
 const getters = {
@@ -14,14 +26,17 @@ const getters = {
     return state.events
   },
   getEvent: state => id => {
-    return _.find(state.events, ['eventId', id])
+    return _.find(state.events.data, ['id', id])
+  },
+  filter: state => {
+    return state.filter
   }
 }
 
 const actions = {
-  async getAll ({ commit, rootGetters }) {
+  async getAll ({ state, commit, rootGetters }, payload) {
     try {
-      const response = await axios.get('/events', {
+      const response = await axios.get('/events' + payload + '&results=2', {
         headers: { Authorization: rootGetters['auth/token'] }
       })
       commit('initEvents', response.data)
@@ -48,7 +63,7 @@ const actions = {
   update ({ commit, rootGetters }, event) {
     return new Promise((resolve, reject) => {
       axios
-        .patch('/events/' + event.eventId, JSON.stringify(event), {
+        .patch('/events/' + event.id, JSON.stringify(event), {
           headers: { Authorization: rootGetters['auth/token'] }
         })
         .then(response => {
@@ -61,14 +76,14 @@ const actions = {
         })
     })
   },
-  delete ({ commit, rootGetters }, eventId) {
+  delete ({ commit, rootGetters }, id) {
     return new Promise((resolve, reject) => {
       axios
-        .delete('/events/' + eventId, {
+        .delete('/events/' + id, {
           headers: { Authorization: rootGetters['auth/token'] }
         })
         .then(() => {
-          commit('deleteEvent', eventId)
+          commit('deleteEvent', id)
           resolve()
         })
         .catch(err => {
@@ -81,23 +96,26 @@ const actions = {
 
 const mutations = {
   initEvents (state, events) {
-    state.events = [].concat(events)
+    state.events = events
   },
   addEvent (state, event) {
-    state.events.push(event)
+    state.events.data.unshift(event)
   },
   updateEvent (state, event) {
-    const index = _.findIndex(state.events, { eventId: event.eventId })
+    const index = _.findIndex(state.events.data, { id: event.id })
     if (index !== -1) {
-      state.events.splice(index, 1)
+      state.events.data.splice(index, 1)
     }
-    state.events.push(event)
+    state.events.data.push(event)
   },
-  deleteEvent (state, eventId) {
-    const index = _.findIndex(state.events, { eventId: eventId })
+  deleteEvent (state, id) {
+    const index = _.findIndex(state.events.data, { id: id })
     if (index !== -1) {
-      state.events.splice(index, 1)
+      state.events.data.splice(index, 1)
     }
+  },
+  setFilter (state, filter) {
+    state.filter = filter
   }
 }
 

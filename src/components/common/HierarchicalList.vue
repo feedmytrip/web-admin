@@ -1,5 +1,6 @@
 <template>
   <div>
+    <fmt-hierarchical-search v-if="searchBar" :value="searchValue" v-on:filter-data="filterData"></fmt-hierarchical-search>
     <table class="table is-striped" style="width: 100%">
       <thead>
         <tr>
@@ -59,16 +60,35 @@
         </template>
       </tbody>
     </table>
+    <fmt-hierarchical-pagination
+      v-if="metadata"
+      :metadata="metadata"
+      v-on:pagination-changed="changePage"
+    ></fmt-hierarchical-pagination>
   </div>
 </template>
 
 <script>
 import Row from '@/components/common/HierarchicalRow'
+import Pagination from '@/components/common/HierarchicalPaging'
+import Search from '@/components/common/HierarchicalSearch'
 export default {
   components: {
-    'fmt-hierarchical-row': Row
+    'fmt-hierarchical-row': Row,
+    'fmt-hierarchical-pagination': Pagination,
+    'fmt-hierarchical-search': Search
   },
   props: {
+    searchBar: {
+      type: Boolean,
+      default: false
+    },
+    searchValue: {
+      type: String
+    },
+    metadata: {
+      type: Object
+    },
     data: {
       type: Array,
       required: true
@@ -132,6 +152,12 @@ export default {
     },
     toggleActive (item) {
       this.$emit('toggle-active-item', item)
+    },
+    filterData (filter) {
+      this.$emit('filter-table-data', filter)
+    },
+    changePage (page) {
+      this.$emit('table-page-changed', page)
     }
   }
 }

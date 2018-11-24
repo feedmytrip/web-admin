@@ -18,16 +18,13 @@
         <div class="field">
           <label class="label is-small">Main Category</label>
           <div class="control is-expanded">
-            <div class="select is-fullwidth is-small">
-              <select name="mainCategory" v-model="event.mainCategoryId">
-                <option value=""></option>
-                <option
-                  v-for="(object, index) in mainCategories"
-                  :key="index"
-                  :value="object.categoryId"
-                >{{ object["title"][languageCode] }}</option>
-              </select>
-            </div>
+            <fmt-select
+              v-model="event.main_category_id"
+              :languageCode="languageCode"
+              action="auxiliary/getMainCategories"
+              get="auxiliary/mainCategories"
+              :dependent="false"
+            ></fmt-select>
           </div>
         </div>
       </div>
@@ -35,16 +32,15 @@
         <div class="field">
           <label class="label is-small">Secondary category</label>
           <div class="control">
-            <div class="select is-small is-fullwidth">
-              <select name="secondaryCategory" v-model="event.secondaryCategoryId">
-                <option value=""></option>
-                <option
-                  v-for="(object, index) in secondaryCategories"
-                  :key="index"
-                  :value="object.categoryId"
-                >{{ object["title"][languageCode] }}</option>
-              </select>
-            </div>
+            <fmt-select
+              v-model="event.secondary_category_id"
+              :languageCode="languageCode"
+              action="auxiliary/getSecondaryCategories"
+              get="auxiliary/secondaryCategories"
+              empty-mutation="auxiliary/emptySecondaryCategories"
+              :dependent="true"
+              :parent-value="event.main_category_id"
+            ></fmt-select>
           </div>
         </div>
       </div>
@@ -54,16 +50,13 @@
         <div class="field">
           <label class="label is-small">Country</label>
           <div class="control">
-            <div class="select is-small is-fullwidth">
-              <select name="country" v-model="event.countryId">
-                <option value=""></option>
-                <option
-                  v-for="(object, index) in countries"
-                  :key="index"
-                  :value="object.geonameId"
-                >{{ object["title"][languageCode] }}</option>
-              </select>
-            </div>
+            <fmt-select
+              v-model="event.country_id"
+              :languageCode="languageCode"
+              action="auxiliary/getLocationCountries"
+              get="auxiliary/locationCountries"
+              :dependent="false"
+            ></fmt-select>
           </div>
         </div>
       </div>
@@ -71,16 +64,15 @@
         <div class="field">
           <label class="label is-small">Region</label>
           <div class="control">
-            <div class="select is-small is-fullwidth">
-              <select name="region" v-model="event.regionId">
-                <option value=""></option>
-                <option
-                  v-for="(object, index) in regions"
-                  :key="index"
-                  :value="object.geonameId"
-                >{{ object["title"][languageCode] }}</option>
-              </select>
-            </div>
+            <fmt-select
+              v-model="event.region_id"
+              :languageCode="languageCode"
+              action="auxiliary/getLocationRegions"
+              get="auxiliary/locationRegions"
+              empty-mutation="auxiliary/emptyLocationRegions"
+              :dependent="true"
+              :parent-value="event.country_id"
+            ></fmt-select>
           </div>
         </div>
       </div>
@@ -88,16 +80,15 @@
         <div class="field">
           <label class="label is-small">City</label>
           <div class="control">
-            <div class="select is-small is-fullwidth">
-              <select name="city" v-model="event.cityId">
-                <option value=""></option>
-                <option
-                  v-for="(object, index) in cities"
-                  :key="index"
-                  :value="object.geonameId"
-                >{{ object["title"][languageCode] }}</option>
-              </select>
-            </div>
+            <fmt-select
+              v-model="event.city_id"
+              :languageCode="languageCode"
+              action="auxiliary/getLocationCities"
+              get="auxiliary/locationCities"
+              empty-mutation="auxiliary/emptyLocationCities"
+              :dependent="true"
+              :parent-value="event.region_id"
+            ></fmt-select>
           </div>
         </div>
       </div>
@@ -130,12 +121,18 @@
 </template>
 
 <script>
+import DynamicSelect from '@/components/common/form/DynamicSelect'
 export default {
-  props: ['categories', 'locations'],
+  components: {
+    'fmt-select': DynamicSelect
+  },
   data () {
     return {
       loading: false,
       event: {
+        country_id: '',
+        region_id: '',
+        main_category_id: '',
         title: {
           pt: '',
           es: '',
@@ -147,44 +144,6 @@ export default {
   computed: {
     languageCode () {
       return this.$store.getters['auth/userLanguageCode']
-    },
-    mainCategories () {
-      return this.$_.orderBy(
-        this.$_.filter(this.categories, { mainCategoryId: '' }),
-        'title' + this.languageCode,
-        'asc'
-      )
-    },
-    secondaryCategories () {
-      if (this.event.mainCategoryId === '') {
-        return []
-      }
-      return this.$_.orderBy(
-        this.$_.filter(this.categories, { mainCategoryId: this.event.mainCategoryId }),
-        'title' + this.languageCode,
-        'asc'
-      )
-    },
-    countries () {
-      return this.$_.orderBy(
-        this.$_.filter(this.locations, { countryId: 'none', regionId: 'none' }),
-        'title' + this.languageCode,
-        'asc'
-      )
-    },
-    regions () {
-      return this.$_.orderBy(
-        this.$_.filter(this.locations, { countryId: this.event.countryId, regionId: 'none' }),
-        'title' + this.languageCode,
-        'asc'
-      )
-    },
-    cities () {
-      return this.$_.orderBy(
-        this.$_.filter(this.locations, { countryId: this.event.countryId, regionId: this.event.regionId }),
-        'title' + this.languageCode,
-        'asc'
-      )
     }
   },
   methods: {

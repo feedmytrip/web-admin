@@ -11,11 +11,16 @@ const state = {
     data: [],
     errors: []
   },
+  mainCategories: [],
+  secondaryCategories: [],
   locations: {
     metadata: {},
     data: [],
     errors: []
-  }
+  },
+  countries: [],
+  regions: [],
+  cities: []
 }
 
 const getters = {
@@ -23,23 +28,91 @@ const getters = {
     return _.find(state.categories.data, { id: id })
   },
   categories: state => {
-    return state.categories.data
+    return state.categories
+  },
+  mainCategories: state => {
+    return state.mainCategories
+  },
+  secondaryCategories: state => {
+    return state.secondaryCategories
   },
   location: state => id => {
     return _.find(state.locations.data, { id: id })
   },
   locations: state => {
-    return state.locations.data
+    return state.locations
+  },
+  locationCountries: state => {
+    return state.countries
+  },
+  locationRegions: state => {
+    return state.regions
+  },
+  locationCities: state => {
+    return state.cities
   }
 }
 
 const actions = {
+  async getLocationCountries ({ commit, rootGetters }) {
+    try {
+      const response = await axios.get('/locations?country_id=is_null', {
+        headers: { Authorization: rootGetters['auth/token'] }
+      })
+      commit('initLocationCountries', response.data)
+    } catch (error) {
+      console.log(error)
+    }
+  },
+  async getLocationRegions ({ commit, rootGetters }, payload) {
+    try {
+      const response = await axios.get(
+        '/locations?country_id=' + payload + '&region_id=is_null',
+        {
+          headers: { Authorization: rootGetters['auth/token'] }
+        }
+      )
+      commit('initLocationRegions', response.data)
+    } catch (error) {
+      console.log(error)
+    }
+  },
+  async getLocationCities ({ commit, rootGetters }, payload) {
+    try {
+      const response = await axios.get('/locations?region_id=' + payload, {
+        headers: { Authorization: rootGetters['auth/token'] }
+      })
+      commit('initLocationCities', response.data)
+    } catch (error) {
+      console.log(error)
+    }
+  },
   async getAllLocations ({ commit, rootGetters }) {
     try {
       const response = await axios.get('/locations', {
         headers: { Authorization: rootGetters['auth/token'] }
       })
-      commit('initlocations', response.data)
+      commit('initLocations', response.data)
+    } catch (error) {
+      console.log(error)
+    }
+  },
+  async getMainCategories ({ commit, rootGetters }) {
+    try {
+      const response = await axios.get('/categories?parent_id=is_null', {
+        headers: { Authorization: rootGetters['auth/token'] }
+      })
+      commit('initMainCategories', response.data)
+    } catch (error) {
+      console.log(error)
+    }
+  },
+  async getSecondaryCategories ({ commit, rootGetters }, payload) {
+    try {
+      const response = await axios.get('/categories?parent_id=' + payload, {
+        headers: { Authorization: rootGetters['auth/token'] }
+      })
+      commit('initSecondaryCategories', response.data)
     } catch (error) {
       console.log(error)
     }
@@ -62,7 +135,7 @@ const actions = {
           headers: { Authorization: rootGetters['auth/token'] }
         })
         .then(response => {
-          commit('addlocation', response.data)
+          commit('addLocation', response.data)
           resolve()
         })
         .catch(err => {
@@ -150,10 +223,28 @@ const actions = {
 }
 
 const mutations = {
-  initlocations (state, locations) {
+  initLocations (state, locations) {
     state.locations = locations
   },
-  addlocation (state, location) {
+  initLocationCountries (state, countries) {
+    state.countries = [].concat(countries.data)
+  },
+  initLocationRegions (state, regions) {
+    state.regions = [].concat(regions.data)
+  },
+  initLocationCities (state, cities) {
+    state.cities = [].concat(cities.data)
+  },
+  emptyLocationCountries (state) {
+    state.countries.splice(0, state.countries.length)
+  },
+  emptyLocationRegions (state) {
+    state.regions.splice(0, state.regions.length)
+  },
+  emptyLocationCities (state) {
+    state.cities.splice(0, state.cities.length)
+  },
+  addLocation (state, location) {
     state.locations.data.push(location)
   },
   updateLocation (state, location) {
@@ -170,6 +261,18 @@ const mutations = {
     if (index !== -1) {
       state.locations.data.splice(index, 1)
     }
+  },
+  initMainCategories (state, categories) {
+    state.mainCategories = [].concat(categories.data)
+  },
+  initSecondaryCategories (state, categories) {
+    state.secondaryCategories = [].concat(categories.data)
+  },
+  emptyMainCategories (state) {
+    state.mainCategories.splice(0, state.mainCategories.length)
+  },
+  emptySecondaryCategories (state) {
+    state.secondaryCategories.splice(0, state.secondaryCategories.length)
   },
   initCategories (state, categories) {
     state.categories = categories

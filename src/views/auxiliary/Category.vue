@@ -29,7 +29,7 @@ export default {
     'fmt-hierarchical-list': HierarchicalList
   },
   async created () {
-    if (this.$store.getters['auxiliary/categories'].length === 0) {
+    if (this.$store.getters['auxiliary/categories'].data.length === 0) {
       const loading = this.$loading.open()
       await this.$store.dispatch('auxiliary/getAllCategories')
       loading.close()
@@ -84,8 +84,9 @@ export default {
   },
   computed: {
     categories () {
+      const categoriesData = this.$store.getters['auxiliary/categories'].data
       return this.$_.orderBy(
-        this.$store.getters['auxiliary/categories'],
+        categoriesData,
         'title.pt',
         'asc'
       )
@@ -98,7 +99,7 @@ export default {
         component: CategoryEdit,
         props: {
           itemId: id,
-          data: this.categories
+          data: this.categories.data
         },
         width: 500
       })
