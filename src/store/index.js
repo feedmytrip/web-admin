@@ -4,6 +4,7 @@ import auth from './modules/auth'
 import highlights from './modules/highlights'
 import auxiliary from './modules/auxiliary'
 import events from './modules/event'
+import schedules from './modules/eventSchedule'
 
 Vue.use(Vuex)
 
@@ -34,7 +35,8 @@ export default new Vuex.Store({
     auth,
     highlights,
     auxiliary,
-    events
+    events,
+    schedules
   },
   strict: debug
 })

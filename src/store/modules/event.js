@@ -34,12 +34,23 @@ const getters = {
 }
 
 const actions = {
-  async getAll ({ state, commit, rootGetters }, payload) {
+  async getAll ({ commit, rootGetters }, payload) {
     try {
-      const response = await axios.get('/events' + payload + '&results=2', {
+      const response = await axios.get('/events' + payload, {
         headers: { Authorization: rootGetters['auth/token'] }
       })
+      console.log(response)
       commit('initEvents', response.data)
+    } catch (err) {
+      console.log(err)
+    }
+  },
+  async get ({ commit, rootGetters }, id) {
+    try {
+      const response = await axios.get('/events/' + id, {
+        headers: { Authorization: rootGetters['auth/token'] }
+      })
+      commit('addEvent', response.data)
     } catch (err) {
       console.log(err)
     }

@@ -32,9 +32,11 @@ const actions = {
   login ({ commit }, credentials) {
     return new Promise((resolve, reject) => {
       Auth.signIn(credentials.username, credentials.password)
-        .then(user => {
-          commit('setUser', user)
-          resolve()
+        .then(() => {
+          Auth.currentAuthenticatedUser().then(user => {
+            commit('setUser', user)
+            resolve()
+          })
         })
         .catch(err => {
           reject(err)

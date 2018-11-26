@@ -8,12 +8,5 @@
 
 <script>
 export default {
-  async created () {
-    if (!this.$store.getters['initialized']) {
-      const loading = this.$loading.open()
-      await this.$store.dispatch('initStore')
-      loading.close()
-    }
-  }
 }
 </script>

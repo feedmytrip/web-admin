@@ -32,7 +32,7 @@ export default {
     'fmt-event-form': GlobalEventNew
   },
   async created () {
-    if (this.$store.getters['events/all'].data.length === 0 && this.$store.getters['events/filter'] === '') {
+    if (this.$store.getters['events/all'].data.length <= 1 && this.$store.getters['events/filter'] === '') {
       const loading = this.$loading.open()
       await this.$store.dispatch('events/getAll', '?page=1&sort=created_date')
       loading.close()
@@ -140,13 +140,13 @@ export default {
     edit (id) {
       this.$router.push('/events/global/' + id)
     },
-    deleteEvent (eventId) {
-      console.log(eventId)
-      this.$store.dispatch('events/delete', eventId)
+    deleteEvent (id) {
+      console.log(id)
+      this.$store.dispatch('events/delete', id)
     },
     toggleActive (item) {
       const event = {
-        eventId: item.id,
+        id: item.id,
         active: item.active
       }
       this.$store.dispatch('events/update', event)

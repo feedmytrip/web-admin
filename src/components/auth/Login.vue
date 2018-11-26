@@ -3,16 +3,11 @@
     <div class="column is-one-third">
       <div class="box">
         <div class="has-text-centered" style="margin-bottom: 20px">
-          <img src="@/assets/logo_200x200.png" style="border-radius: 4px;" />
+          <img src="@/assets/logo_200x200.png" style="border-radius: 4px;">
         </div>
         <div class="field">
           <p class="control has-icons-left has-icons-right">
-            <input
-              v-model="credentials.username"
-              class="input"
-              type="text"
-              placeholder="Username"
-            />
+            <input v-model="credentials.username" class="input" type="text" placeholder="Username">
             <span class="icon is-small is-left">
               <i class="fa fa-user"></i>
             </span>
@@ -26,7 +21,7 @@
               type="password"
               placeholder="Password"
               @keyup.enter="signIn"
-            />
+            >
             <span class="icon is-small is-left">
               <i class="fa fa-lock"></i>
             </span>

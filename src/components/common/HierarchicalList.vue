@@ -7,6 +7,7 @@
           <th
             v-for="(field, index) in fields"
             :key="index"
+            v-bind:class="[field.type == 'boolean' ? 'has-text-centered' : '']"
             v-bind:style="field.style"
           >{{ field.label }}</th>
           <th v-if="deleteButton"></th>
