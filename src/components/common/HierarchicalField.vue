@@ -22,7 +22,7 @@
     <div v-if="type === 'boolean'" class="has-text-centered">
       <span
         class="icon is-size-6 has-text-info"
-        v-bind:class="[value ? 'has-text-info' : 'has-text-white-ter']"
+        v-bind:class="[value ? 'has-text-info' : 'has-text-grey-lighter']"
       >
         <i class="fa fa-check-circle"></i>
       </span>
