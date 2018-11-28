@@ -1,4 +1,5 @@
 import Axios from 'axios'
+import Vue from 'vue'
 import _ from 'lodash'
 
 const axios = Axios.create({
@@ -39,7 +40,6 @@ const actions = {
       const response = await axios.get('/events' + payload, {
         headers: { Authorization: rootGetters['auth/token'] }
       })
-      console.log(response)
       commit('initEvents', response.data)
     } catch (err) {
       console.log(err)
@@ -63,7 +63,7 @@ const actions = {
         })
         .then(response => {
           commit('addEvent', response.data)
-          resolve()
+          resolve(response.data)
         })
         .catch(err => {
           console.log(err.response)
@@ -115,9 +115,10 @@ const mutations = {
   updateEvent (state, event) {
     const index = _.findIndex(state.events.data, { id: event.id })
     if (index !== -1) {
-      state.events.data.splice(index, 1)
+      Vue.set(state.events.data, index, event)
+    } else {
+      state.events.data.push(event)
     }
-    state.events.data.push(event)
   },
   deleteEvent (state, id) {
     const index = _.findIndex(state.events.data, { id: id })

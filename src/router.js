@@ -8,7 +8,10 @@ import Store from './store'
 import Login from './views/Login'
 import Dashboard from './views/Dashboard'
 import Highlights from './views/Highlights'
-import Trips from './views/Trips'
+import TripsHome from './views/trip/Home'
+import TripsGlobal from './views/trip/Global'
+import TripsUser from './views/trip/User'
+import TripDetails from './views/trip/Details'
 import Users from './views/Users'
 import AuxiliaryHome from './views/auxiliary/Home'
 import AuxiliaryCategories from './views/auxiliary/Category'
@@ -36,12 +39,6 @@ const router = new Router({
       path: '/highlights',
       name: 'Highlights',
       component: Highlights,
-      meta: { requiresAuth: true }
-    },
-    {
-      path: '/trips',
-      name: 'Trips',
-      component: Trips,
       meta: { requiresAuth: true }
     },
     {
@@ -73,6 +70,33 @@ const router = new Router({
           path: 'users/:id',
           name: 'EditUsersEvents',
           component: EventsUserEdit,
+          meta: { requiresAuth: true }
+        }
+      ]
+    },
+    {
+      path: '/trips',
+      name: 'Trips',
+      meta: { requiresAuth: true },
+      component: TripsHome,
+      redirect: '/trips/global',
+      children: [
+        {
+          path: 'global',
+          name: 'GlobalTrips',
+          component: TripsGlobal,
+          meta: { requiresAuth: true }
+        },
+        {
+          path: 'users',
+          name: 'UsersTrips',
+          component: TripsUser,
+          meta: { requiresAuth: true }
+        },
+        {
+          path: ':id',
+          name: 'TripDetails',
+          component: TripDetails,
           meta: { requiresAuth: true }
         }
       ]

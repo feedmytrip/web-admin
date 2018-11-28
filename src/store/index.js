@@ -5,6 +5,7 @@ import highlights from './modules/highlights'
 import auxiliary from './modules/auxiliary'
 import events from './modules/event'
 import schedules from './modules/eventSchedule'
+import trips from './modules/trip'
 
 Vue.use(Vuex)
 
@@ -36,7 +37,8 @@ export default new Vuex.Store({
     highlights,
     auxiliary,
     events,
-    schedules
+    schedules,
+    trips
   },
   strict: debug
 })
