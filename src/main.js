@@ -30,6 +30,11 @@ Amplify.configure({
     // OPTIONAL - Amazon Cognito Web Client ID (26-char alphanumeric string)
     userPoolWebClientId: '2i1vka74ub2c6b3i5l6o3aaio'
   },
+  Storage: {
+    bucket: 'fmt-files',
+    region: 'us-east-1',
+    identityPoolId: 'us-east-1:f8b226eb-c4bd-4b7d-816d-89d6defd9229'
+  },
   API: {
     endpoints: [
       {

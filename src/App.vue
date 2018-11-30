@@ -9,27 +9,65 @@
         </div>
       </section>
     </div>
-    <div style="padding-top: 3.25rem;" v-if="signedIn">
-      <header class="navbar is-white is-fixed-top" style="background-color: white;">
+    <div
+      style="padding-top: 3.25rem;"
+      v-if="signedIn"
+    >
+      <header
+        class="navbar is-white is-fixed-top"
+        style="background-color: white; border-bottom: 1px solid #ddd;"
+      >
         <div class="container is-fluid">
           <div class="navbar-brand">
-            <router-link to="/" class="navbar-item" style="background-color: white;">FeedMyTrip</router-link>
-            <span class="navbar-burger burger" data-target="navbarMenuHeroC">
+            <router-link
+              to="/"
+              class="navbar-item"
+              style="background-color: white;"
+            >FeedMyTrip</router-link>
+            <span
+              class="navbar-burger burger"
+              data-target="navbarMenuHeroC"
+            >
               <span></span>
               <span></span>
               <span></span>
             </span>
           </div>
-          <div id="navbarMenuHeroC" class="navbar-menu">
+          <div
+            id="navbarMenuHeroC"
+            class="navbar-menu"
+          >
             <div class="navbar-end">
-              <router-link to="/highlights" class="navbar-item">Highlights</router-link>
-              <router-link to="/trips" class="navbar-item">Trips</router-link>
-              <router-link to="/events" class="navbar-item">Events</router-link>
-              <router-link to="/users" class="navbar-item">Users</router-link>
-              <router-link to="/auxiliary" class="navbar-item">Auxiliary</router-link>
+              <router-link
+                to="/highlights"
+                class="navbar-item"
+              >Highlights</router-link>
+              <router-link
+                to="/trips"
+                class="navbar-item"
+              >Trips</router-link>
+              <router-link
+                to="/events"
+                class="navbar-item"
+              >Events</router-link>
+              <router-link
+                to="/users"
+                class="navbar-item"
+              >Users</router-link>
+              <router-link
+                to="/auxiliary"
+                class="navbar-item"
+              >Auxiliary</router-link>
               <span class="navbar-item">
-                <b-tooltip label="Sign Out" type="is-light" position="is-bottom">
-                  <button class="button is-success is-inverted" @click="signOut">
+                <b-tooltip
+                  label="Sign Out"
+                  type="is-light"
+                  position="is-bottom"
+                >
+                  <button
+                    class="button is-success is-inverted"
+                    @click="signOut"
+                  >
                     <i class="fa fa-sign-out"></i>
                   </button>
                 </b-tooltip>
@@ -122,16 +160,13 @@ export default {
 .pace {
   -webkit-pointer-events: none;
   pointer-events: none;
-
   -webkit-user-select: none;
   -moz-user-select: none;
   user-select: none;
 }
-
 .pace-inactive {
   display: none;
 }
-
 .pace .pace-progress {
   background: #dd88ba;
   position: fixed;

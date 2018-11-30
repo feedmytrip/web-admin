@@ -7,7 +7,11 @@ import Store from './store'
 
 import Login from './views/Login'
 import Dashboard from './views/Dashboard'
-import Highlights from './views/Highlights'
+import HighlightsHome from './views/highlight/Home'
+import HighlightsEdit from './views/highlight/Edit'
+import HighlightsEditGeneral from './views/highlight/EditGeneral'
+import HighlightsEditTrips from './views/highlight/EditTrips'
+import HighlightsEditEvents from './views/highlight/EditEvents'
 import TripsHome from './views/trip/Home'
 import TripsGlobal from './views/trip/Global'
 import TripsUser from './views/trip/User'
@@ -37,9 +41,36 @@ const router = new Router({
     },
     {
       path: '/highlights',
-      name: 'Highlights',
-      component: Highlights,
+      name: 'HighlightsHome',
+      component: HighlightsHome,
       meta: { requiresAuth: true }
+    },
+    {
+      path: '/highlights/:id',
+      name: 'HighlightsEdit',
+      component: HighlightsEdit,
+      meta: { requiresAuth: true },
+      redirect: '/highlights/:id/general',
+      children: [
+        {
+          path: 'general',
+          name: 'HighlightsEditGeneral',
+          component: HighlightsEditGeneral,
+          meta: { requiresAuth: true }
+        },
+        {
+          path: 'trips',
+          name: 'HighlightsEditTrips',
+          component: HighlightsEditTrips,
+          meta: { requiresAuth: true }
+        },
+        {
+          path: 'events',
+          name: 'HighlightsEditEvents',
+          component: HighlightsEditEvents,
+          meta: { requiresAuth: true }
+        }
+      ]
     },
     {
       path: '/events',
