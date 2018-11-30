@@ -263,7 +263,7 @@ export default {
         this.schedule_date = date.toDate()
       }
 
-      if (this.$_.isEmpty(this.images)) {
+      if (this.$_.isEmpty(this.images) || this.images.highlight_id !== this.highlight.id) {
         await this.$store.dispatch('highlights/getAllImages', this.highlight.id)
       }
     }
@@ -309,7 +309,7 @@ export default {
         this.schedule_date = date.toDate()
       }
 
-      if (this.$_.isEmpty(this.images)) {
+      if (this.$_.isEmpty(this.images) || this.images.highlight_id !== this.highlight.id) {
         await this.$store.dispatch('highlights/getAllImages', this.highlight.id)
       }
     },
@@ -323,6 +323,7 @@ export default {
           'contentType': image.type
         })
           .then(async (result) => {
+            console.log(result)
             await app.$store.dispatch('highlights/newImage', { highlight_id: app.highlight.id, path: result.key, file_name: image.name })
             app.dropFiles.splice(0, 1)
           })

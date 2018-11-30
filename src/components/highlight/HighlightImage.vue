@@ -26,23 +26,34 @@ export default {
   props: ['image'],
   data () {
     return {
-      src: ''
+      src: this.image.s3ImageURL
     }
   },
   mounted () {
-    Storage.get(this.image.path)
-      .then(result => {
-        this.src = result
-      })
-      .catch(err => console.log(err))
+    if (this.$_.isEmpty(this.image.s3ImageURL)) {
+      console.log('storage get')
+      Storage.get(this.image.path)
+        .then(result => {
+          this.image.s3ImageURL = result
+          this.$store.commit('highlights/updateHighlightImage', this.image)
+          this.src = this.image.s3ImageURL
+        })
+        .catch(err => console.log(err))
+    }
   },
   watch: {
     image: function () {
-      Storage.get(this.image.path)
-        .then(result => {
-          this.src = result
-        })
-        .catch(err => console.log(err))
+      if (this.$_.isEmpty(this.image.s3ImageURL)) {
+        console.log('storage get')
+        Storage.get(this.image.path)
+          .then(result => {
+            this.image.s3ImageURL = result
+            this.$store.commit('highlights/updateHighlightImage', this.image)
+            this.src = this.image.s3ImageURL
+          })
+          .catch(err => console.log(err))
+      }
+      this.src = this.image.s3ImageURL
     }
   },
   methods: {

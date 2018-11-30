@@ -109,6 +109,7 @@ const actions = {
   },
   async getAllImages ({ commit, rootGetters }, payload) {
     try {
+      commit('emptyHighlightImages')
       const response = await axios.get('/highlights/' + payload + '/images', {
         headers: { Authorization: rootGetters['auth/token'] }
       })
@@ -234,6 +235,14 @@ const mutations = {
       state.highlights.data.push(highlight)
     }
   },
+  updateHighlightImage (state, image) {
+    const index = _.findIndex(state.images.data, { id: image.id })
+    if (index !== -1) {
+      Vue.set(state.images.data, index, image)
+    } else {
+      state.images.data.push(image)
+    }
+  },
   deleteHighlight (state, id) {
     const index = _.findIndex(state.highlights.data, { id: id })
     if (index !== -1) {
@@ -245,6 +254,9 @@ const mutations = {
     if (index !== -1) {
       state.images.data.splice(index, 1)
     }
+  },
+  emptyHighlightImages (state) {
+    state.images.data = []
   },
   setFilter (state, filter) {
     state.filter = filter
