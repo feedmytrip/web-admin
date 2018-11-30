@@ -29,8 +29,8 @@
 <script>
 export default {
   mounted () {
-    this.$store.commit('setTitle', 'Trips')
-    this.$store.commit('setSubtitle', 'Manages system global and user Trips')
+    this.$store.commit('setTitle', 'Highlights')
+    this.$store.commit('setSubtitle', 'Manages system highlights')
   }
 }
 </script>
