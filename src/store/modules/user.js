@@ -1,6 +1,4 @@
 import Axios from 'axios'
-import Vue from 'vue'
-import _ from 'lodash'
 
 const axios = Axios.create({
   baseURL: process.env.VUE_APP_API
@@ -67,38 +65,6 @@ const actions = {
           reject(err)
         })
     })
-  },
-  update ({ commit, rootGetters }, user) {
-    return new Promise((resolve, reject) => {
-      axios
-        .patch('/users/' + user.id, JSON.stringify(user), {
-          headers: { Authorization: rootGetters['auth/token'] }
-        })
-        .then(response => {
-          commit('updateUser', response.data)
-          resolve()
-        })
-        .catch(err => {
-          console.log(err.response)
-          reject(err)
-        })
-    })
-  },
-  delete ({ commit, rootGetters }, id) {
-    return new Promise((resolve, reject) => {
-      axios
-        .delete('/users/' + id, {
-          headers: { Authorization: rootGetters['auth/token'] }
-        })
-        .then(() => {
-          commit('deleteUser', id)
-          resolve()
-        })
-        .catch(err => {
-          console.log(err.response)
-          reject(err)
-        })
-    })
   }
 }
 
@@ -108,20 +74,6 @@ const mutations = {
   },
   addUser (state, user) {
     state.users.data.unshift(user)
-  },
-  updateUser (state, user) {
-    const index = _.findIndex(state.users.data, { id: user.id })
-    if (index !== -1) {
-      Vue.set(state.users.data, index, user)
-    } else {
-      state.users.data.push(user)
-    }
-  },
-  deleteUser (state, id) {
-    const index = _.findIndex(state.users.data, { id: id })
-    if (index !== -1) {
-      state.users.data.splice(index, 1)
-    }
   },
   setFilter (state, filter) {
     state.filter = filter
