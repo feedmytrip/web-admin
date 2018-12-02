@@ -14,8 +14,12 @@
         v-on="field.type === 'active' ? { 'toggle-active': toggleActive } : {}"
       ></fmt-field>
     </td>
-    <td style="width:2%;cursor: pointer;" @click="deleteItem">
-      <a class="icon is-size-5 has-text-danger" v-if="deleteButton">
+    <td
+      style="width:2%;cursor: pointer;"
+      @click="deleteItem"
+      v-if="deleteButton"
+    >
+      <a class="icon is-size-5 has-text-danger">
         <i class="fa fa-trash"></i>
       </a>
     </td>
