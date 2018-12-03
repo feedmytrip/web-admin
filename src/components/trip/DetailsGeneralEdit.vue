@@ -6,7 +6,7 @@
         <div class="columns">
           <div class="column">
             <div class="field">
-              <label class="label is-small">Title PT</label>
+              <label class="label is-small">Title PT 111</label>
               <div class="control">
                 <input
                   class="input is-small"
@@ -16,8 +16,6 @@
                 >
               </div>
             </div>
-          </div>
-          <div class="column">
             <div class="field">
               <label class="label is-small">Title ES</label>
               <div class="control">
@@ -29,8 +27,6 @@
                 >
               </div>
             </div>
-          </div>
-          <div class="column">
             <div class="field">
               <label class="label is-small">Title EN</label>
               <div class="control">
@@ -45,7 +41,7 @@
           </div>
         </div>
         <div class="columns">
-          <div class="column is-4">
+          <div class="column">
             <div class="field">
               <label class="label is-small">Country</label>
               <div class="control is-expanded">
@@ -58,8 +54,6 @@
                 ></fmt-select>
               </div>
             </div>
-          </div>
-          <div class="column is-4">
             <div class="field">
               <label class="label is-small">Region</label>
               <div class="control">
@@ -74,8 +68,6 @@
                 ></fmt-select>
               </div>
             </div>
-          </div>
-          <div class="column is-4">
             <div class="field">
               <label class="label is-small">City</label>
               <div class="control">
@@ -105,8 +97,6 @@
                 ></textarea>
               </div>
             </div>
-          </div>
-          <div class="column">
             <div class="field">
               <label class="label is-small">Description ES</label>
               <div class="control">
@@ -118,8 +108,6 @@
                 ></textarea>
               </div>
             </div>
-          </div>
-          <div class="column">
             <div class="field">
               <label class="label is-small">Description EN</label>
               <div class="control">
@@ -136,7 +124,10 @@
         <div class="columns">
           <div class="column">
             <div class="field">
-              <p class="control is-pulled-right" style="padding-top: 24px;">
+              <p
+                class="control is-pulled-right"
+                style="padding-top: 24px;"
+              >
                 <a
                   class="button is-small is-info"
                   @click="save"
@@ -159,7 +150,7 @@ export default {
     'fmt-select': DynamicSelect
   },
   mounted () {
-    if (this.trip) {
+    if (!this.$_.isEmpty(this.trip)) {
       this.tripEdit.id = this.trip.id
       this.tripEdit.country_id = this.trip.country_id
       this.tripEdit.region_id = this.trip.region_id
@@ -178,7 +169,14 @@ export default {
       tripEdit: {
         id: '',
         country_id: '',
-        region_id: ''
+        region_id: '',
+        city_id: '',
+        'title.pt': '',
+        'title.es': '',
+        'title.en': '',
+        'description.pt': '',
+        'description.es': '',
+        'description.en': ''
       }
     }
   },

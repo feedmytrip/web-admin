@@ -24,6 +24,30 @@
           <template slot="empty">No results for {{filter}}</template>
         </b-autocomplete>
       </div>
+      <draggable
+        v-model="localEvents"
+        :options="{group:'events', animation: 0, ghostClass: 'ghost'}"
+        @change="onChange"
+        style="display: block; min-height:10px;"
+      >
+        <div
+          class="has-background-white-ter is-size-7"
+          style="padding:15px; border-top: 1px solid #ddd; border-left:12px solid #3273dc;"
+          v-for="event in localEvents"
+          :key="event.id"
+        >
+          <span style="vertical-align: middle; height:">{{ event.title.pt }}</span>
+          <a
+            class="icon is-size-6 has-text-danger is-pulled-right"
+            style="cursor:pointer;"
+            @click="deleteEvent(event.id)"
+          >
+            <i class="fa fa-times-circle"></i>
+          </a>
+        </div>
+      </draggable>
+      <!--
+        https://github.com/SortableJS/Vue.Draggable
       <ul>
         <li
           v-for="(event, key) in dayEvents"
@@ -41,35 +65,48 @@
           </a>
         </li>
       </ul>
+      -->
     </div>
   </div>
 </template>
 
 <script>
+import draggable from 'vuedraggable'
 import debounce from 'lodash/debounce'
 export default {
   props: ['day', 'itineraryId'],
+  components: {
+    draggable
+  },
   data () {
     return {
+      localEvents: [],
       filter: '',
       isFetching: false,
       selected: null
     }
   },
+  mounted () {
+    this.localEvents = this.dayEvents
+  },
   computed: {
-    globalEvents () {
-      return this.$store.getters['events/all'].data
-    },
     dayEvents () {
       const events = this.$store.getters['trips/getTripItineraryEvents'].data
       const d = this.day
       return this.$_.filter(events, function (e) { return e.begin_offset >= 86400 * (d - 1) && e.begin_offset < 86400 * d })
+    },
+    globalEvents () {
+      return this.$store.getters['events/all'].data
     },
     languageCode () {
       return this.$store.getters['auth/userLanguageCode']
     }
   },
   methods: {
+    onChange ({ added }) {
+      console.log('Day ' + this.day)
+      console.log(added)
+    },
     getAsyncEventData: debounce(async function () {
       const payload = '?page=1&filter=' + this.filter
       this.isFetching = true
@@ -151,3 +188,25 @@ export default {
   }
 }
 </script>
+
+<style>
+.flip-list-move {
+  transition: transform 0.5s;
+}
+.no-move {
+  transition: transform 0s;
+}
+.ghost {
+  opacity: 0.5;
+  background: #c8ebfb;
+}
+.list-group {
+  min-height: 20px;
+}
+.list-group-item {
+  cursor: move;
+}
+.list-group-item i {
+  cursor: pointer;
+}
+</style>

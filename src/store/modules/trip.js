@@ -59,6 +59,9 @@ const getters = {
   },
   filter: state => {
     return state.filter
+  },
+  moving: state => {
+    return state.moving
   }
 }
 

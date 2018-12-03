@@ -1,13 +1,28 @@
 <template>
-  <div>
-    <fmt-itinerary-edit v-if="trip" :id="trip.itinerary_id"></fmt-itinerary-edit>
-    <fmt-general-edit :trip="trip"></fmt-general-edit>
+  <div class="columns">
+    <div class="column">
+      <fmt-itinerary-edit
+        v-if="trip"
+        :id="trip.itinerary_id"
+      ></fmt-itinerary-edit>
+      <fmt-general-edit
+        v-if="trip"
+        :trip="trip"
+      ></fmt-general-edit>
+    </div>
+    <div class="column is-10">
+      <fmt-timeline
+        v-if="trip"
+        :itinerary-id="trip.itinerary_id"
+      ></fmt-timeline>
+    </div>
   </div>
 </template>
 
 <script>
 import DetailsGeneralEdit from '@/components/trip/DetailsGeneralEdit'
-import DetailsItinerary from '@/components/trip/DetailsItinerary'
+import DetailsItineraryEdit from '@/components/trip/DetailsItineraryEdit'
+import Timeline from '@/components/common/timeline/Timeline'
 export default {
   async created () {
     if (this.$_.isEmpty(this.trip)) {
@@ -18,7 +33,8 @@ export default {
   },
   components: {
     'fmt-general-edit': DetailsGeneralEdit,
-    'fmt-itinerary-edit': DetailsItinerary
+    'fmt-itinerary-edit': DetailsItineraryEdit,
+    'fmt-timeline': Timeline
   },
   computed: {
     trip () {
