@@ -77,6 +77,14 @@ export default {
   },
   watch: {
     totalDays: function (newTotal, oldTotal) {
+      if (newTotal > 30) {
+        this.end_date = this.$moment([this.start_date.getFullYear(), this.start_date.getMonth(), this.start_date.getDate()]).add(29, 'days').toDate()
+        this.$toast.open({
+          duration: 3000,
+          message: 'Itinerary can`t have more then 30 days',
+          type: 'is-warning'
+        })
+      }
       if (oldTotal !== 0 && newTotal !== oldTotal && newTotal > 0) {
         this.updateItinerary()
       }
