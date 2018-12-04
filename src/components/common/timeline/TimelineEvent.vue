@@ -8,8 +8,8 @@
     @dragend="dragend($event)"
   >
     <template v-if="draggable == 'none'">
-      <div class="has-background-white is-uppercase has-text-grey timeline-event">
-        {{event.title.pt }} - {{ renderType}}
+      <div class="has-background-white is-capitalized timeline-event">
+        {{event.title.pt }}
       </div>
     </template>
     <template v-if="draggable != 'none'">
@@ -23,8 +23,8 @@
         class="timeline-drag has-background-primary is-pulled-right"
         id="duration"
       />
-      <div class="has-background-white is-uppercase has-text-grey timeline-event is-clearfix">
-        {{event.title.pt }} - {{ renderType }}
+      <div class="has-background-white is-capitalized timeline-event is-clearfix">
+        {{event.title.pt }}
       </div>
     </template>
   </div>
@@ -85,6 +85,6 @@ export default {
 .timeline-event {
   height: 20px;
   border: 1px solid black;
-  padding: 1px;
+  color: #4a4a4a;
 }
 </style>

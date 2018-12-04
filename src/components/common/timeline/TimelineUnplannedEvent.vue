@@ -4,7 +4,7 @@
     @dragstart="dragstart($event)"
     @dragend="dragend($event)"
     :style="eventStyle"
-    class="is-size-7 has-text-centered has-background-white is-uppercase has-text-weight-bold has-text-grey timeline-unplanned-event"
+    class="is-size-7 has-text-centered has-background-white is-capitalized timeline-unplanned-event"
   >{{event['title'][languageCode]}}</div>
 </template>
 
@@ -35,8 +35,8 @@ export default {
 <style>
 .timeline-unplanned-event {
   width: 100%;
-  height: 30px;
+  height: 20px;
   border: 1px solid black;
-  padding: 5px;
+  color: #4a4a4a;
 }
 </style>
