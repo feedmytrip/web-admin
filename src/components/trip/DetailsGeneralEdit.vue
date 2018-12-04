@@ -1,8 +1,8 @@
 <template>
-  <div style="margin-bottom: 45px;">
+  <div>
     <h2 class="subtitle">General</h2>
     <div class="card">
-      <div class="card-content">
+      <div class="card-content fmt-scroll fmt-trip-general-edit-scroll">
         <div class="columns">
           <div class="column">
             <div class="field">
@@ -121,13 +121,12 @@
             </div>
           </div>
         </div>
+      </div>
+      <div class="card-content">
         <div class="columns">
           <div class="column">
             <div class="field">
-              <p
-                class="control is-pulled-right"
-                style="padding-top: 24px;"
-              >
+              <p class="control is-pulled-right">
                 <a
                   class="button is-small is-info"
                   @click="save"
@@ -219,3 +218,11 @@ export default {
   }
 }
 </script>
+
+<style>
+.fmt-trip-general-edit-scroll {
+  overflow-y: auto;
+  max-height: 450px;
+  overflow-x: hidden;
+}
+</style>

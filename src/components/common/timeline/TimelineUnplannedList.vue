@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import TimelineEvent from './TimelineEvent'
+import TimelineEvent from './TimelineUnplannedEvent'
 export default {
   props: ['totalDays'],
   components: {

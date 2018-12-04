@@ -17,12 +17,14 @@
       :total-days="totalDays"
       @delete-unplanned="deleteEvent"
     ></fmt-timeline-unplanned>
-    <fmt-timeline-day
-      v-for="(value, key) in totalDays"
-      :key="key"
-      :day="value"
-      :itinerary-id="itineraryId"
-    ></fmt-timeline-day>
+    <div class="fmt-scroll fmt-timeline-scroll">
+      <fmt-timeline-day
+        v-for="(value, key) in totalDays"
+        :key="key"
+        :day="value"
+        :itinerary-id="itineraryId"
+      ></fmt-timeline-day>
+    </div>
   </div>
 </template>
 
@@ -78,8 +80,8 @@ export default {
     drop (ev) {
       ev.preventDefault()
       this.dropZoneStyle = {}
-      const id = ev.dataTransfer.getData('text')
-      this.deleteEvent(id)
+      const payload = JSON.parse(ev.dataTransfer.getData('text'))
+      this.deleteEvent(payload.event.id)
     },
     dragover (ev) {
       ev.preventDefault()
@@ -115,3 +117,28 @@ export default {
   }
 }
 </script>
+
+<style>
+.fmt-timeline-scroll {
+  overflow-y: auto;
+  max-height: 700px;
+  overflow-x: hidden;
+  padding-right: 8px;
+}
+.fmt-scroll::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
+  background-color: #f5f5f5;
+}
+
+.fmt-scroll::-webkit-scrollbar {
+  width: 8px;
+  background-color: #f5f5f5;
+}
+
+.fmt-scroll::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: #ddd;
+}
+</style>

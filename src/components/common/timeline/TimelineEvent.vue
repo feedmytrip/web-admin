@@ -1,56 +1,88 @@
 <template>
   <div
+    :style="eventStyle"
+    class="is-size-7 has-text-centered"
     draggable="true"
+    @mousedown="setDragHandler"
     @dragstart="dragstart($event)"
     @dragend="dragend($event)"
-    :style="eventStyle"
-    class="is-size-7 has-text-centered has-background-white is-uppercase has-text-weight-bold has-text-grey timeline-event"
-  >{{event.title.pt}}</div>
+  >
+    <template v-if="draggable == 'none'">
+      <div class="has-background-white is-uppercase has-text-weight-bold has-text-grey timeline-event">
+        {{event.title.pt }} - {{ renderType}}
+      </div>
+    </template>
+    <template v-if="draggable != 'none'">
+      <div
+        v-if="draggable == 'offset' || draggable == 'all'"
+        class="timeline-drag has-background-info is-pulled-left"
+        id="offset"
+      />
+      <div
+        v-if="draggable == 'duration' || draggable == 'all'"
+        class="timeline-drag has-background-primary is-pulled-right"
+        id="duration"
+      />
+      <div class="has-background-white is-uppercase has-text-weight-bold has-text-grey timeline-event is-clearfix">
+        {{event.title.pt }} - {{ renderType }}
+      </div>
+    </template>
+  </div>
 </template>
 
 <script>
 export default {
-  props: ['event', 'unplanned', 'day'],
+  props: ['event', 'renderType', 'offset', 'duration', 'draggable'],
   computed: {
     moving () {
       return this.$store.getters['trips/moving']
     },
     eventStyle () {
-      if (this.unplanned) {
-        return {
-          width: '100%',
-          'margin-left': '0%'
-        }
-      }
-      const offset = this.event.begin_offset - (86400 * (this.day - 1))
-      let w = 31.8
-      let m = 0
-      if (offset === 21600) {
-        m = 34.1
-      }
-      if (offset === 43200) {
-        m = 68.2
-      }
       return {
-        width: w + '%',
-        'margin-left': m + '%',
+        width: this.duration + '%',
+        'margin-left': this.offset + '%',
         'margin-top': '10px'
       }
     }
   },
+  data () {
+    return {
+      handler: ''
+    }
+  },
   methods: {
-    dragstart: function (e) {
-      e.target.style.opacity = 0.1
-      e.dataTransfer.setData('text/plain', this.event.id)
+    setDragHandler: function (e) {
+      console.log(e.target.id)
+      this.handler = e.target.id
+    },
+    dragstart: function (e, type) {
+      if (this.handler === 'duration' || this.handler === 'offset') {
+        e.target.style.opacity = 0.1
+        const payload = {
+          event: this.event,
+          dragging: this.handler
+        }
+        e.dataTransfer.setData('text/plain', JSON.stringify(payload))
+      } else {
+        e.preventDefault()
+      }
     },
     dragend: function (e) {
       e.target.style.opacity = 1
+      this.handler = ''
     }
   }
 }
 </script>
 
 <style>
+.timeline-drag {
+  width: 15px;
+  height: 30px;
+  border: 1px solid black;
+  padding: 5px;
+  cursor: move;
+}
 .timeline-event {
   height: 30px;
   border: 1px solid black;

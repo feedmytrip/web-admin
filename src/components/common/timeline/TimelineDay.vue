@@ -1,11 +1,12 @@
 <template>
   <div>
-    <div style="border-bottom:1px solid #7a7a7a; padding-bottom: 10px; margin-bottom: 15px;">
-      <h2
-        class="subtitle"
-        style="padding-bottom: 10px; cursor:pointer;"
-        @click="isOpen = !isOpen"
-      >Day {{ day }}</h2>
+    <div
+      class="subtitle fmt-timeline-day-title"
+      @click="isOpen = !isOpen"
+    >
+      <span @dragover="isOpen = true">
+        Day {{ day }}
+      </span>
     </div>
     <b-collapse :open.sync="isOpen">
       <div style="position: relative;">
@@ -22,7 +23,7 @@
             </span>
             <div>Morning</div>
             <div
-              @drop="dropMorning"
+              @drop="drop($event, 0, 21600)"
               @dragover="dragover"
               @dragleave="dragleave"
               style="border:2px dashed #ddd; margin: 5px 0; padding: 5px;"
@@ -38,7 +39,7 @@
             </span>
             <div>Afternoon</div>
             <div
-              @drop="dropAfternoon"
+              @drop="drop($event, 21600, 21600)"
               @dragover="dragover"
               @dragleave="dragleave"
               style="border:2px dashed #ddd; margin: 5px 0; padding: 5px;"
@@ -51,7 +52,7 @@
             </span>
             <div>Night</div>
             <div
-              @drop="dropNight"
+              @drop="drop($event, 43200, 43200)"
               @dragover="dragover"
               @dragleave="dragleave"
               style="border:2px dashed #ddd; margin: 5px 0; padding: 5px;"
@@ -84,8 +85,11 @@ export default {
   computed: {
     events () {
       const events = this.$store.getters['trips/getTripItineraryEvents'].data
-      const d = this.day
-      return this.$_.filter(events, function (e) { return e.begin_offset >= 86400 * (d - 1) && e.begin_offset < 86400 * d })
+      const dayMorIni = 86400 * (this.day - 1)
+      const dayNgtEnd = dayMorIni + 86400
+      return this.$_.filter(events, function (e) {
+        return e.begin_offset >= 0 && ((e.begin_offset >= dayMorIni && e.begin_offset < dayNgtEnd) || (e.begin_offset < dayMorIni && e.begin_offset + e.duration >= dayMorIni))
+      })
     },
     styleObject () {
       let h = 120
@@ -96,32 +100,38 @@ export default {
     }
   },
   methods: {
-    dropMorning (ev) {
+    drop (ev, periodOffset, periodDelta) {
       ev.preventDefault()
       ev.target.classList.remove('has-background-info')
-      const id = ev.dataTransfer.getData('text')
-      this.updateEvent(id, 86400 * (this.day - 1))
+      const payload = JSON.parse(ev.dataTransfer.getData('text'))
+      let field, value
+      const dayOffset = (86400 * (this.day - 1)) + periodOffset
+      if (payload.dragging === 'duration') {
+        field = 'duration'
+        value = (dayOffset + periodDelta) - payload.event.begin_offset
+      }
+      if (payload.dragging === 'offset') {
+        field = 'begin_offset'
+        value = dayOffset
+      }
+      if (value >= 0) {
+        this.updateEvent(payload.event.id, field, value)
+      } else {
+        this.$toast.open({
+          duration: 3000,
+          message: 'Event finish cannot be less then event start',
+          type: 'is-danger'
+        })
+      }
     },
-    dropAfternoon (ev) {
-      ev.preventDefault()
-      ev.target.classList.remove('has-background-info')
-      const id = ev.dataTransfer.getData('text')
-      this.updateEvent(id, (86400 * (this.day - 1)) + 21600)
-    },
-    dropNight (ev) {
-      ev.preventDefault()
-      ev.target.classList.remove('has-background-info')
-      const id = ev.dataTransfer.getData('text')
-      this.updateEvent(id, (86400 * (this.day - 1)) + 43200)
-    },
-    updateEvent (id, offset) {
+    updateEvent (id, field, value) {
       const loading = this.$loading.open()
       const payload = {
         trip_id: this.$route.params.id,
         itinerary_id: this.itineraryId,
-        id: id,
-        begin_offset: offset
+        id: id
       }
+      payload[field] = value
       this.$store.dispatch('trips/updateItineraryEvent', payload)
         .then(() => {
           loading.close()
@@ -151,3 +161,13 @@ export default {
   }
 }
 </script>
+
+<style>
+.fmt-timeline-day-title {
+  border-bottom: 1px solid #7a7a7a;
+  padding-bottom: 10px;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  cursor: pointer;
+}
+</style>
