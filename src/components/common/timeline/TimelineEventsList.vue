@@ -118,7 +118,7 @@ export default {
           offset: 34,
           duration: 66,
           events: this.$_.filter(events, function (e) {
-            return (e.begin_offset > dayAftIni && e.begin_offset <= dayAftEnd) && (e.begin_offset + e.duration > dayAftEnd && e.begin_offset + e.duration <= dayNgtEnd)
+            return (e.begin_offset >= dayAftIni && e.begin_offset < dayAftEnd) && (e.begin_offset + e.duration > dayAftEnd && e.begin_offset + e.duration <= dayNgtEnd)
           })
         },
         {
@@ -145,7 +145,7 @@ export default {
           offset: 68,
           duration: 32,
           events: this.$_.filter(events, function (e) {
-            return (e.begin_offset >= dayNgtIni && e.begin_offset < dayNgtEnd) && e.begin_offset + e.duration > dayNgtEnd
+            return (e.begin_offset >= dayNgtIni && e.begin_offset < dayNgtEnd) && e.begin_offset + e.duration >= dayNgtEnd
           })
         }
       ]

@@ -26,8 +26,7 @@
               @drop="drop($event, 0, 21600)"
               @dragover="dragover"
               @dragleave="dragleave"
-              style="border:2px dashed #ddd; margin: 5px 0; padding: 5px;"
-              class="has-text-grey-lighter is-size-7 drop-zone"
+              class="has-text-grey-light is-size-7 drop-zone fmt-timeline-day-period-drop-zone"
             >Drop events here</div>
           </div>
           <div
@@ -42,8 +41,7 @@
               @drop="drop($event, 21600, 21600)"
               @dragover="dragover"
               @dragleave="dragleave"
-              style="border:2px dashed #ddd; margin: 5px 0; padding: 5px;"
-              class="has-text-grey-lighter is-size-7 drop-zone"
+              class="has-text-grey-light is-size-7 drop-zone fmt-timeline-day-period-drop-zone"
             >Drop events here</div>
           </div>
           <div class="column is-4 has-text-centered">
@@ -55,8 +53,7 @@
               @drop="drop($event, 43200, 43200)"
               @dragover="dragover"
               @dragleave="dragleave"
-              style="border:2px dashed #ddd; margin: 5px 0; padding: 5px;"
-              class="has-text-grey-lighter is-size-7 drop-zone"
+              class="has-text-grey-light is-size-7 drop-zone fmt-timeline-day-period-drop-zone"
             >Drop events here</div>
           </div>
         </div>
@@ -110,7 +107,7 @@ export default {
         field = 'duration'
         value = (dayOffset + periodDelta) - payload.event.begin_offset
       }
-      if (payload.dragging === 'offset') {
+      if (payload.dragging === 'offset' || payload.dragging === 'unplanned') {
         field = 'begin_offset'
         value = dayOffset
       }
@@ -169,5 +166,11 @@ export default {
   margin-bottom: 15px;
   padding-bottom: 10px;
   cursor: pointer;
+}
+
+.fmt-timeline-day-period-drop-zone {
+  border: 2px dashed #ddd;
+  margin: 5px 0;
+  padding: 3px;
 }
 </style>
