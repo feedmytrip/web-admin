@@ -3,7 +3,6 @@
     draggable="true"
     @dragstart="dragstart($event)"
     @dragend="dragend($event)"
-    :style="eventStyle"
     class="is-size-7 has-text-centered has-background-white is-capitalized timeline-unplanned-event"
   >{{event['title'][languageCode]}}</div>
 </template>

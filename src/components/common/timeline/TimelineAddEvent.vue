@@ -23,6 +23,7 @@
 
 <script>
 import debounce from 'lodash/debounce'
+import TimelineNewEvent from './TimelineNewEvent.vue'
 export default {
   props: ['itineraryId'],
   data () {
@@ -47,31 +48,15 @@ export default {
       this.isFetching = false
     }, 500),
     AddNewGlobalEvent () {
-      this.$dialog.prompt({
-        message: 'New Event',
-        inputAttrs: {
-          placeholder: 'event title',
-          value: this.filter
+      this.$modal.open({
+        parent: this,
+        component: TimelineNewEvent,
+        hasModalCard: true,
+        props: {
+          title: this.filter
         },
-        confirmText: 'Add',
-        onConfirm: (value) => {
-          const event = {
-            title: {}
-          }
-          event['title'][this.languageCode] = value
-          this.$store.dispatch('events/new', event)
-            .then(response => {
-              this.AddItineraryEvent(response)
-            })
-            .catch(err => {
-              console.log(err)
-              this.loading = false
-              this.$toast.open({
-                duration: 3000,
-                message: err.message,
-                type: 'is-danger'
-              })
-            })
+        events: {
+          created: this.AddItineraryEvent
         }
       })
     },
