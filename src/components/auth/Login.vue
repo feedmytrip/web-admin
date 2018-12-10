@@ -1,13 +1,21 @@
 <template>
   <div class="columns is-centered">
-    <div class="column is-one-third">
-      <div class="box">
-        <div class="has-text-centered" style="margin-bottom: 20px">
-          <img src="@/assets/logo_200x200.png" style="border-radius: 4px;">
+    <div class="column is-one-fifth is-size-7">
+      <div>
+        <div
+          class="has-text-centered"
+          style="margin-bottom: 20px"
+        >
+          <img src="@/assets/fmt-login.png">
         </div>
         <div class="field">
           <p class="control has-icons-left has-icons-right">
-            <input v-model="credentials.username" class="input" type="text" placeholder="Username">
+            <input
+              v-model="credentials.username"
+              class="input is-small is-rounded"
+              type="text"
+              placeholder="Username"
+            >
             <span class="icon is-small is-left">
               <i class="fa fa-user"></i>
             </span>
@@ -17,7 +25,7 @@
           <p class="control has-icons-left">
             <input
               v-model="credentials.password"
-              class="input"
+              class="input is-small is-rounded"
               type="password"
               placeholder="Password"
               @keyup.enter="signIn"
@@ -29,7 +37,10 @@
         </div>
         <div class="field">
           <p class="control has-text-right">
-            <button class="button is-link" @click="signIn">Sign In</button>
+            <button
+              class="button is-small is-rounded is-primary fmt-is-pink"
+              @click="signIn"
+            >Sign In</button>
           </p>
         </div>
       </div>
@@ -78,3 +89,11 @@ export default {
   }
 }
 </script>
+
+<style>
+.fmt-is-pink {
+  background-color: #ff4bbc !important;
+  border-color: transparent;
+  color: #fff;
+}
+</style>
