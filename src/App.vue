@@ -14,8 +14,8 @@
       v-if="signedIn"
     >
       <header
-        class="navbar is-info is-fixed-top fmt-pink-background"
-        style="border-bottom: 1px solid #ddd;"
+        class="navbar is-white is-fixed-top"
+        style="border-bottom: 1px solid #ddd; background-color: white !important;"
       >
         <div class="container is-fluid">
           <div class="navbar-brand">
@@ -24,8 +24,8 @@
               class="navbar-item"
               style="background-color: white; padding: 0px;"
             ><img
-                style="max-height:52px;"
-                src="@/assets/fmt-logo.png"
+                style="max-height:3.0rem;"
+                src="@/assets/fmt-logo.svg"
               ></router-link>
             <span
               class="navbar-burger burger"
@@ -144,9 +144,9 @@ export default {
 .fmt-hero-background {
   background-image: linear-gradient(
     141deg,
-    #3725d4 0%,
-    #7957d5 71%,
-    #9b67df 100%
+    #ff6699 0%,
+    #ff6699 71%,
+    #ff6699 100%
   ) !important;
 }
 .fmt-content {
