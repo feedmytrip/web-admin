@@ -38,7 +38,7 @@
         <div class="field">
           <p class="control has-text-right">
             <button
-              class="button is-small is-rounded is-primary fmt-is-pink"
+              class="button is-small is-rounded is-primary fmt-is-purple"
               @click="signIn"
             >Sign In</button>
           </p>
@@ -91,8 +91,8 @@ export default {
 </script>
 
 <style>
-.fmt-is-pink {
-  background-color: #ff4bbc !important;
+.fmt-is-purple {
+  background-color: #7957d5 !important;
   border-color: transparent;
   color: #fff;
 }

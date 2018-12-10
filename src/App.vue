@@ -1,7 +1,7 @@
 <template>
   <section>
     <div v-if="!signedIn">
-      <section class="hero fmt-hero-background is-fullheight">
+      <section class="hero fmt-pink-background is-fullheight">
         <div class="hero-body">
           <div class="container">
             <router-view></router-view>
@@ -14,16 +14,19 @@
       v-if="signedIn"
     >
       <header
-        class="navbar is-white is-fixed-top"
-        style="background-color: white; border-bottom: 1px solid #ddd;"
+        class="navbar is-info is-fixed-top fmt-pink-background"
+        style="border-bottom: 1px solid #ddd;"
       >
         <div class="container is-fluid">
           <div class="navbar-brand">
             <router-link
               to="/"
               class="navbar-item"
-              style="background-color: white;"
-            >FeedMyTrip</router-link>
+              style="background-color: white; padding: 0px;"
+            ><img
+                style="max-height:52px;"
+                src="@/assets/fmt-logo.png"
+              ></router-link>
             <span
               class="navbar-burger burger"
               data-target="navbarMenuHeroC"
@@ -65,7 +68,7 @@
                   position="is-bottom"
                 >
                   <button
-                    class="button is-success is-inverted"
+                    class="button is-inverted is-primary"
                     @click="signOut"
                   >
                     <i class="fa fa-sign-out"></i>
@@ -135,6 +138,9 @@ export default {
 </script>
 
 <style>
+.fmt-pink-background {
+  background-color: #ff6699 !important;
+}
 .fmt-hero-background {
   background-image: linear-gradient(
     141deg,
