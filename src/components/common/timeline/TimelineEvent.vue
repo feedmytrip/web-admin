@@ -20,7 +20,7 @@
       />
       <div
         v-if="draggable == 'duration' || draggable == 'all'"
-        class="timeline-drag has-background-primary is-pulled-right"
+        class="timeline-drag has-background-info is-pulled-right"
         id="duration"
       />
       <div class="has-background-white is-capitalized timeline-event is-clearfix">

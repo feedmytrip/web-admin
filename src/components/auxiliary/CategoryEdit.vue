@@ -3,26 +3,29 @@
     <header class="card-header">
       <p class="card-header-title">Category</p>
     </header>
-    <div class="card-content" v-if="loading">
+    <div
+      class="card-content"
+      v-if="loading"
+    >
       <span class="icon has-text-info has-text-centerd">
         <i class="fa fa-spinner fa-pulse"></i>
       </span>
     </div>
-    <div class="card-content" v-if="!loading">
+    <div
+      class="card-content"
+      v-if="!loading"
+    >
       <div class="content">
         <div class="field">
           <label class="label is-small">Main Category</label>
           <div class="control is-expanded">
-            <div class="select is-fullwidth is-small">
-              <select name="country" v-model="category.parent_id">
-                <option value=""></option>
-                <option
-                  v-for="(object, index) in mainCategories"
-                  :key="index"
-                  :value="object.id"
-                >{{ object["title"][languageCode] }}</option>
-              </select>
-            </div>
+            <fmt-select
+              v-model="category.parent_id"
+              :languageCode="languageCode"
+              action="auxiliary/getMainCategories"
+              get="auxiliary/mainCategories"
+              :dependent="false"
+            ></fmt-select>
           </div>
         </div>
         <div class="field">
@@ -60,15 +63,30 @@
         </div>
       </div>
     </div>
-    <footer class="card-footer is-size-7" v-if="!loading">
-      <a href="#" class="card-footer-item has-text-primary is-loading" @click="update">Save</a>
-      <a href="#" class="card-footer-item" @click="$parent.close();">Cancel</a>
+    <footer
+      class="card-footer is-size-7"
+      v-if="!loading"
+    >
+      <a
+        href="#"
+        class="card-footer-item has-text-primary is-loading"
+        @click="update"
+      >Save</a>
+      <a
+        href="#"
+        class="card-footer-item"
+        @click="$parent.close();"
+      >Cancel</a>
     </footer>
   </div>
 </template>
 
 <script>
+import DynamicSelect from '@/components/common/form/DynamicSelect'
 export default {
+  components: {
+    'fmt-select': DynamicSelect
+  },
   props: ['itemId', 'data'],
   created () {
     const index = this.$_.findIndex(this.data, { id: this.itemId })
@@ -77,6 +95,7 @@ export default {
     this.category['title.en'] = this.data[index].title.en
     this.category.id = this.itemId
     this.category.parent_id = this.data[index].parent_id
+    console.log(index)
   },
   data () {
     return {
@@ -85,13 +104,6 @@ export default {
     }
   },
   computed: {
-    mainCategories () {
-      return this.$_.orderBy(
-        this.$_.filter(this.data, { parent_id: '' }),
-        'title' + this.languageCode,
-        'asc'
-      )
-    },
     languageCode () {
       return this.$store.getters['auth/userLanguageCode']
     }

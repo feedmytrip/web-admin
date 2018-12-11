@@ -107,7 +107,10 @@
       </div>
       <div class="column is-1">
         <div class="field">
-          <p class="control is-pulled-right" style="padding-top: 24px;">
+          <p
+            class="control is-pulled-right"
+            style="padding-top: 24px;"
+          >
             <a
               class="button is-small is-info"
               @click="save"

@@ -99,7 +99,7 @@ export default {
         component: CategoryEdit,
         props: {
           itemId: id,
-          data: this.categories.data
+          data: this.categories
         },
         width: 500
       })

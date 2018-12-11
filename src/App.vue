@@ -138,6 +138,9 @@ export default {
 </script>
 
 <style>
+.fmt-purple-background {
+  background-color: #7e57c2 !important;
+}
 .fmt-pink-background {
   background-color: #ff6699 !important;
 }

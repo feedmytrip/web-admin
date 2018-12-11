@@ -36,13 +36,25 @@ export default {
     globalEvents () {
       return this.$store.getters['events/all'].data
     },
+    trip () {
+      return this.$store.getters['trips/getTrip'](this.$route.params.id)
+    },
     languageCode () {
       return this.$store.getters['auth/userLanguageCode']
     }
   },
   methods: {
     getAsyncEventData: debounce(async function () {
-      const payload = '?page=1&filter=' + this.filter
+      let payload = '?page=1&filter=' + this.filter
+      if (!this.$_.isEmpty(this.trip.country_id)) {
+        payload += '&country_id=' + this.trip.country_id
+      }
+      if (!this.$_.isEmpty(this.trip.region_id)) {
+        payload += '&region_id=' + this.trip.region_id
+      }
+      if (!this.$_.isEmpty(this.trip.city_id)) {
+        payload += '&city_id=' + this.trip.city_id
+      }
       this.isFetching = true
       await this.$store.dispatch('events/getAll', payload)
       this.isFetching = false

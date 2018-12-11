@@ -4,16 +4,13 @@
       <div class="field">
         <label class="label is-small">Main Category</label>
         <div class="control is-expanded">
-          <div class="select is-fullwidth is-small">
-            <select name="country" v-model="category.parent_id">
-              <option value=""></option>
-              <option
-                v-for="(object, index) in mainCategories"
-                :key="index"
-                :value="object.id"
-              >{{ object["title"][languageCode] }}</option>
-            </select>
-          </div>
+          <fmt-select
+            v-model="category.parent_id"
+            :languageCode="languageCode"
+            action="auxiliary/getMainCategories"
+            get="auxiliary/mainCategories"
+            :dependent="false"
+          ></fmt-select>
         </div>
       </div>
       <div class="field">
@@ -32,8 +29,15 @@
         </p>
       </div>
       <div class="field is-narrow">
-        <p class="control" style="padding-top: 24px;">
-          <a class="button is-small is-info" @click="save" :class="loading ? 'is-loading' : ''">New</a>
+        <p
+          class="control"
+          style="padding-top: 24px;"
+        >
+          <a
+            class="button is-small is-info"
+            @click="save"
+            :class="loading ? 'is-loading' : ''"
+          >New</a>
         </p>
       </div>
     </div>
@@ -41,7 +45,11 @@
 </template>
 
 <script>
+import DynamicSelect from '@/components/common/form/DynamicSelect'
 export default {
+  components: {
+    'fmt-select': DynamicSelect
+  },
   props: {
     data: Array
   },
@@ -60,13 +68,6 @@ export default {
     }
   },
   computed: {
-    mainCategories () {
-      return this.$_.orderBy(
-        this.$_.filter(this.data, { parent_id: '' }),
-        'title' + this.languageCode,
-        'asc'
-      )
-    },
     languageCode () {
       return this.$store.getters['auth/userLanguageCode']
     }
