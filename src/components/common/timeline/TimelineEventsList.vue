@@ -178,7 +178,6 @@ export default {
           offset: 0,
           sort: false,
           duration: 66,
-          sort: false,
           events: this.$_.filter(events, function (e) {
             return e.begin_offset < dayMorIni && (e.begin_offset + e.duration > dayAftIni && e.begin_offset + e.duration <= dayAftEnd)
           })

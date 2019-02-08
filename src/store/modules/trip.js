@@ -215,6 +215,29 @@ const actions = {
         })
     })
   },
+  swapItineraryDay ({ rootGetters }, day) {
+    return new Promise((resolve, reject) => {
+      axios
+        .post(
+          '/trips/' +
+            day.trip_id +
+            '/itineraries/' +
+            day.itinerary_id +
+            '/swap',
+          JSON.stringify(day),
+          {
+            headers: { Authorization: rootGetters['auth/token'] }
+          }
+        )
+        .then(() => {
+          resolve()
+        })
+        .catch(err => {
+          console.log(err.response)
+          reject(err)
+        })
+    })
+  },
   delete ({ commit, rootGetters }, id) {
     return new Promise((resolve, reject) => {
       axios

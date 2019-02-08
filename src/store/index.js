@@ -15,7 +15,8 @@ const debug = process.env.NODE_ENV !== 'production'
 export default new Vuex.Store({
   state: {
     title: '',
-    subtitle: ''
+    subtitle: '',
+    timelineSwapDay: 0
   },
   getters: {
     title: state => {
@@ -23,6 +24,9 @@ export default new Vuex.Store({
     },
     subtitle: state => {
       return state.subtitle
+    },
+    timelineSwapDay: state => {
+      return state.timelineSwapDay
     }
   },
   mutations: {
@@ -31,6 +35,9 @@ export default new Vuex.Store({
     },
     setSubtitle (state, subtitle) {
       state.subtitle = subtitle
+    },
+    setTimelineSwapDay (state, swapping) {
+      state.timelineSwapDay = swapping
     }
   },
   modules: {
