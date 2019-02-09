@@ -113,6 +113,16 @@ const actions = {
       console.log(err)
     }
   },
+  async refresh ({ commit, rootGetters }, id) {
+    try {
+      const response = await axios.get('/trips/' + id, {
+        headers: { Authorization: rootGetters['auth/token'] }
+      })
+      commit('updateTrip', response.data)
+    } catch (err) {
+      console.log(err)
+    }
+  },
   new ({ commit, rootGetters }, trip) {
     return new Promise((resolve, reject) => {
       axios
@@ -230,6 +240,31 @@ const actions = {
           }
         )
         .then(() => {
+          resolve()
+        })
+        .catch(err => {
+          console.log(err.response)
+          reject(err)
+        })
+    })
+  },
+  appendItinerary ({ commit, rootGetters }, payload) {
+    return new Promise((resolve, reject) => {
+      axios
+        .post(
+          '/trips/' +
+            payload.trip_id +
+            '/itineraries/' +
+            payload.itinerary_id +
+            '/append/' +
+            payload.append_itinerary_id,
+          JSON.stringify(payload),
+          {
+            headers: { Authorization: rootGetters['auth/token'] }
+          }
+        )
+        .then(response => {
+          commit('updateTripItinerary', response.data)
           resolve()
         })
         .catch(err => {

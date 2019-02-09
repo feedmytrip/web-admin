@@ -11,7 +11,20 @@
       <i class="fa fa-lg fa-trash"></i>
     </div>
     <div class="subtitle">Timeline</div>
-    <fmt-timeline-add :itinerary-id="itineraryId"></fmt-timeline-add>
+    <div
+      class="columns"
+      style="margin: 0px"
+    >
+      <div
+        class="column is-4"
+        style="padding-left: 0px"
+      >
+        <fmt-timeline-append :itinerary-id="itineraryId"></fmt-timeline-append>
+      </div>
+      <div class="column">
+        <fmt-timeline-add :itinerary-id="itineraryId"></fmt-timeline-add>
+      </div>
+    </div>
     <fmt-timeline-unplanned
       ref="element"
       :total-days="totalDays"
@@ -30,6 +43,7 @@
 
 <script>
 import TimelineAdd from './TimelineAddEvent'
+import TimelineAppendItinerary from './TimelineAppendItinerary'
 import TimelineDay from './TimelineDay'
 import TimelineUnplanned from './TimelineUnplannedList'
 export default {
@@ -48,7 +62,8 @@ export default {
   components: {
     'fmt-timeline-add': TimelineAdd,
     'fmt-timeline-day': TimelineDay,
-    'fmt-timeline-unplanned': TimelineUnplanned
+    'fmt-timeline-unplanned': TimelineUnplanned,
+    'fmt-timeline-append': TimelineAppendItinerary
   },
   data () {
     return {

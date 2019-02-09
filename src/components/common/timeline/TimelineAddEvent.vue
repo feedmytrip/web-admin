@@ -1,5 +1,5 @@
 <template>
-  <div style="margin-bottom: 25px;">
+  <div>
     <b-autocomplete
       v-model="filter"
       size="is-small"

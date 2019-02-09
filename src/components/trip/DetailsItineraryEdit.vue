@@ -88,6 +88,10 @@ export default {
       if (oldTotal !== 0 && newTotal !== oldTotal && newTotal > 0) {
         this.updateItinerary()
       }
+    },
+    itinerary: function (newItinerary, oldItinerary) {
+      this.start_date = new Date(this.itinerary.start_date)
+      this.end_date = new Date(this.itinerary.end_date)
     }
   },
   methods: {

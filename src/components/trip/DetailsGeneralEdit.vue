@@ -6,7 +6,7 @@
         <div class="columns">
           <div class="column">
             <div class="field">
-              <label class="label is-small">Title PT 111</label>
+              <label class="label is-small">Title PT</label>
               <div class="control">
                 <input
                   class="input is-small"
